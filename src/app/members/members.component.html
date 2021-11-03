@@ -1,0 +1,167 @@
+<div class="main-content d-flex flex-column">
+    <div class="clearfix">
+        <button class="float-right btn btn-lg btn-danger" (click)="toggleForm(emptyMember)">Add New</button>
+    </div>
+    <div class="card flex-grow-1">
+        <div class="card-header card-header-danger clearfix">
+            <div class="float-left">
+                <h4 class="card-title">Members</h4>
+                <p class="card-category">Member information table listing</p>
+            </div>
+            <form *ngIf="showTable" class="float-right">
+                <div class="input-group no-border">
+                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
+                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <table *ngIf="showTable" class="table">
+                <thead class=" text-primary">
+                <tr class="d-flex">
+                    <th class="col-1">
+                        ID
+                    </th>
+                    <th class="col-3">
+                        Name
+                    </th>
+                    <th class="col-2">
+                        Email
+                    </th>
+                    <th class="col-1">
+                        Contact No.
+                    </th>
+                    <th class="col-3">
+                        Address
+                    </th>
+                    <th class="col-1">
+                        City
+                    </th>
+                    <th class="col-1"><!--Empty header for edit button--></th>
+                </tr>
+                </thead>
+                <tbody *ngFor="let member of mockMembers">
+                <tr class="d-flex">
+                    <td class="col-1 align-self-center">
+                        {{member.id}}
+                    </td>
+                    <td class="col-3 align-self-center">
+                        {{member.name}}
+                    </td>
+                    <td class="col-2 align-self-center">
+                        {{member.email}}
+                    </td>
+                    <td class="col-1 align-self-center">
+                        {{member.contactNo}}
+                    </td>
+                    <td class="col-3 align-self-center">
+                        {{member.addr}}
+                    </td>
+                    <td class="col-1 align-self-center">
+                        {{member.city}}
+                    </td>
+                    <td class="col-1 text-center align-self-center">
+                        <button class="btn btn-info btn-sm" (click)="toggleForm(member);">Edit</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <form *ngIf="showForm">
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        ID
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.id}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Name
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.name}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Email
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.email}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Contact No.
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.contactNo}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Address
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.addr}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        City
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.city}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Graduating Institution
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.gradUni}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Graduating Year
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="number" value="{{formMember.gradYear}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Graduating Programme
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput value="{{formMember.gradProg}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button class="btn btn-danger btn-lg" (click)="toggleForm(emptyMember)">Done</button>
+            </form>
+        </div>
+    </div>
+</div>

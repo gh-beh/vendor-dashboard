@@ -28,7 +28,7 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.displayMembers = this.mockMembers;
     */
     this.memberService.getMembers()
-        .subscribe(members => this.displayMembers = members === [] ? MOCK_MEMBERS : members);
+        .subscribe(members => this.displayMembers = (members.length === 0 ? MOCK_MEMBERS : members));
     this.showTable = true;
     this.showForm = false;
     this.emptyMember = NULL_MEMBER;

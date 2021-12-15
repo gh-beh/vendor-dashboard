@@ -33,7 +33,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     */
     this.eventService.getEvents().pipe(takeUntil(this.ngUnsub))
         .subscribe(
-        res => this.displayEvents = res === [] ? MOCK_EVENTS : res);
+        res => this.displayEvents = (res.length === 0 ? MOCK_EVENTS : res));
     this.showTable = true;
     this.showForm = false;
     this.emptyEvent = NULL_EVENT;

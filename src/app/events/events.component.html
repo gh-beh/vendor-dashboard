@@ -1,5 +1,5 @@
 <div class="main-content d-flex flex-column">
-    <div class="clearfix">
+    <div class="clearfix" *ngIf="showTable">
         <button class="float-right btn btn-lg btn-danger" (click)="addEvent()">Add New</button>
     </div>
     <div class="card flex-grow-1">
@@ -158,11 +158,11 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-2 col-sm-5">
-                        <button class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
                     </div>
                     <div class="col-lg-1 col-sm-2"></div>
                     <div class="col-lg-2 col-sm-5">
-                        <button class="btn btn-dark btn-lg w-100" (click)="hideForm()">Back</button>
+                        <button type="button" class="btn btn-dark btn-lg w-100" (click)="hideForm()">Back</button>
                     </div>
                 </div>
             </form>

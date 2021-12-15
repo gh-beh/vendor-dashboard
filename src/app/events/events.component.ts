@@ -71,7 +71,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     const submitEvent = {...this.formEvent};
     submitEvent.startDate = this.parseISO(this.startDate.value);
     submitEvent.endDate = this.parseISO(this.startDate.value);
-    this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
+    if (this.createEvent) { this.eventService.addEvent(submitEvent); } else { this.eventService.updateEvent(submitEvent); }
     this.hideForm();
   }
 

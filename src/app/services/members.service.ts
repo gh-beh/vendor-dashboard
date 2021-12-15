@@ -23,14 +23,14 @@ export class MembersService {
     }
   }
 
-  getEvents(): Observable<Member[]> {
+  getMembers(): Observable<Member[]> {
     return this.httpClient.get<Member[]>(this.api)
         .pipe(
             catchError(this.handleError<Member[]>('getMembers', []))
         );
   }
 
-  getEvent(id: number): Observable<Member> {
+  getMember(id: number): Observable<Member> {
     return this.httpClient.get<Member>(this.api + '/' + id.toString())
         .pipe(
             catchError(this.handleError<Member>('getMember with id ' + id.toString, NULL_MEMBER))

@@ -1,6 +1,6 @@
 <div class="main-content d-flex flex-column">
-    <div class="clearfix">
-        <button class="float-right btn btn-lg btn-danger" (click)="toggleForm(emptyMember)">Add New</button>
+    <div *ngIf="showTable" class="clearfix">
+        <button class="float-right btn btn-lg btn-danger" (click)="addMember()">Add New</button>
     </div>
     <div class="card flex-grow-1">
         <div class="card-header card-header-danger clearfix">
@@ -43,7 +43,7 @@
                     <th class="col-1"><!--Empty header for edit button--></th>
                 </tr>
                 </thead>
-                <tbody *ngFor="let member of mockMembers">
+                <tbody *ngFor="let member of displayMembers">
                 <tr class="d-flex">
                     <td class="col-1 align-self-center">
                         {{member.id}}
@@ -64,7 +64,7 @@
                         {{member.city}}
                     </td>
                     <td class="col-1 text-center align-self-center">
-                        <button class="btn btn-info btn-sm" (click)="toggleForm(member);">Edit</button>
+                        <button class="btn btn-info btn-sm" (click)="editMember(member);">Edit</button>
                     </td>
                 </tr>
                 </tbody>
@@ -72,21 +72,11 @@
             <form *ngIf="showForm">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
-                        ID
-                    </div>
-                    <div class="col-6">
-                        <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.id}}">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2 text-primary align-self-center">
                         Name
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.name}}">
+                            <input matInput [(ngModel)]="formMember.name" name="name">
                         </mat-form-field>
                     </div>
                 </div>
@@ -96,7 +86,7 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.email}}">
+                            <input matInput [(ngModel)]="formMember.email" name="email">
                         </mat-form-field>
                     </div>
                 </div>
@@ -106,7 +96,7 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.contactNo}}">
+                            <input matInput [(ngModel)]="formMember.contactNo" name="contactNo">
                         </mat-form-field>
                     </div>
                 </div>
@@ -116,7 +106,7 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.addr}}">
+                            <input matInput [(ngModel)]="formMember.addr" name="addr">
                         </mat-form-field>
                     </div>
                 </div>
@@ -126,7 +116,7 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.city}}">
+                            <input matInput [(ngModel)]="formMember.city" name="city">
                         </mat-form-field>
                     </div>
                 </div>
@@ -136,7 +126,7 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.gradUni}}">
+                            <input matInput [(ngModel)]="formMember.gradUni" name="gradUni">
                         </mat-form-field>
                     </div>
                 </div>
@@ -146,7 +136,7 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput type="number" value="{{formMember.gradYear}}">
+                            <input matInput type="number" [(ngModel)]="formMember.gradYear" name="gradYear">
                         </mat-form-field>
                     </div>
                 </div>
@@ -156,11 +146,19 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput value="{{formMember.gradProg}}">
+                            <input matInput [(ngModel)]="formMember.gradProg" name="gradProg">
                         </mat-form-field>
                     </div>
                 </div>
-                <button class="btn btn-danger btn-lg" (click)="toggleForm(emptyMember)">Done</button>
+                <div class="row">
+                    <div class="col-lg-2 col-sm-5">
+                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                    </div>
+                    <div class="col-lg-1 col-sm-2"></div>
+                    <div class="col-lg-2 col-sm-5">
+                        <button type="button" class="btn btn-dark btn-lg w-100" (click)="hideForm()">Back</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

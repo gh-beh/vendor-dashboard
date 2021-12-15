@@ -1,5 +1,5 @@
 <div class="main-content d-flex flex-column">
-    <div class="clearfix">
+    <div *ngIf="showTable" class="clearfix">
         <button class="float-right btn btn-lg btn-danger" (click)="toggleForm(emptyReward)">Add New</button>
     </div>
     <div class="card flex-grow-1">

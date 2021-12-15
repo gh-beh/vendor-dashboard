@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MembersComponent } from './members/members.component';
-import { TableListComponent } from './table-list/table-list.component';
+import { EventsComponent } from './events/events.component';
 import { RewardsComponent } from './rewards/rewards.component';
 import { LoginComponent } from './login/login.component';
 import { MapsComponent } from './maps/maps.component';
@@ -23,6 +23,7 @@ import {
 } from '@agm/core';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import {EventsService} from './services/events.service';
 
 @NgModule({
   imports: [
@@ -40,9 +41,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-
   ],
-  providers: [],
+  providers: [EventsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

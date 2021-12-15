@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  dbApiUrl: 'https://chilamlol.pythonanywhere.com/',
 };

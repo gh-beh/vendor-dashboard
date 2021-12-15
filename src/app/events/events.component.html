@@ -1,0 +1,171 @@
+<div class="main-content d-flex flex-column">
+    <div class="clearfix">
+        <button class="float-right btn btn-lg btn-danger" (click)="addEvent()">Add New</button>
+    </div>
+    <div class="card flex-grow-1">
+        <div class="card-header card-header-danger clearfix">
+            <div class="float-left">
+                <h4 class="card-title">Event & Activities</h4>
+                <p class="card-category">Event & Activity information table listing</p>
+            </div>
+            <form *ngIf="showTable" class="float-right">
+                <div class="input-group no-border">
+                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
+                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <table *ngIf="showTable" class="table">
+                <thead class=" text-primary">
+                    <tr class="d-flex">
+                        <th class="col-1">
+                            No.
+                        </th>
+                        <th class="col-3">
+                            Image
+                        </th>
+                        <th class="col-2">
+                            Event Name
+                        </th>
+                        <th class="col-1">
+                            Start Date
+                        </th>
+                        <th class="col-1">
+                            End Date
+                        </th>
+                        <th class="col-2 text-center">
+                            Registration Link
+                        </th>
+                        <th class="col-1">
+                            Record Status
+                        </th>
+                        <th class="col-1"><!--Empty header for edit button--></th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let event of displayEvents, let i = index">
+                    <tr class="d-flex">
+                        <td class="col-1 align-self-center">
+                            {{i+1}}
+                        </td>
+                        <td class="col-3 align-self-center">
+                            <img class="img mw-100" src="{{formEvent.image}}" appDefault="assets/img/img-default.png">
+                        </td>
+                        <td class="col-2 align-self-center">
+                            {{event.name}}
+                        </td>
+                        <td class="col-1 align-self-center">
+                            {{event.startDate}}
+                        </td>
+                        <td class="col-1 align-self-center">
+                            {{event.endDate}}
+                        </td>
+                        <td class="col-2 align-self-center text-center">
+                            <a href="{{event.registerLink}}">{{event.registerLink}}</a>
+                        </td>
+                        <td class="col-1 align-self-center">
+                            {{event.status}}
+                        </td>
+                        <td class="col-1 text-center align-self-center">
+                            <button class="btn btn-info btn-sm" (click)="editEvent(event)">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <form *ngIf="showForm">
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Event Name
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="formEvent.name" name="name" matInput required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Description
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <textarea [(ngModel)]="formEvent.description" name="description" matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Start Date
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field appearance="fill">
+                            <input matInput [matDatepicker]="startDatePicker" required [formControl]="startDate">
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        End Date
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field appearance="fill">
+                            <input matInput [matDatepicker]="endDatePicker" required [formControl]="endDate">
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Registration Link
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="formEvent.registerLink" name="registerLink" matInput required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Status
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="formEvent.status" name="status" required>
+                                <mat-option value="ongoing">Ongoing</mat-option>
+                                <mat-option value="processing">Processing</mat-option>
+                                <mat-option value="closed">Closed</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Image
+                    </div>
+                    <div class="col-4 d-flex justify-content-center">
+                        <img class="img mw-100 h-100" src="{{formEvent.image}}" appDefault="/assets/img/img-default.png">
+                    </div>
+                    <div class="col-2 align-self-center">
+                        <button class="btn btn-success btn-lg">Upload Image</button>
+                        <button class="btn btn-danger btn-lg">Remove Image</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-sm-5">
+                        <button class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                    </div>
+                    <div class="col-lg-1 col-sm-2"></div>
+                    <div class="col-lg-2 col-sm-5">
+                        <button class="btn btn-dark btn-lg w-100" (click)="hideForm()">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

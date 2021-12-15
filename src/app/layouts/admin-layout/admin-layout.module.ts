@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { MembersComponent } from '../../members/members.component';
-import { TableListComponent } from '../../table-list/table-list.component';
+import { EventsComponent } from '../../events/events.component';
 import { RewardsComponent } from '../../rewards/rewards.component';
 import { LoginComponent } from '../../login/login.component';
 import { MapsComponent } from '../../maps/maps.component';
@@ -18,6 +18,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatIconModule} from '@angular/material/icon';
+import {ImagePreloadDirective} from './directives/img-preload.directive';
 
 @NgModule({
     imports: [
@@ -35,15 +36,16 @@ import {MatIconModule} from '@angular/material/icon';
         MatIconModule,
         MatNativeDateModule
     ],
-  declarations: [
-    DashboardComponent,
-    MembersComponent,
-    TableListComponent,
-    RewardsComponent,
-    LoginComponent,
-    MapsComponent,
-    NotificationsComponent,
-  ]
+    declarations: [
+        DashboardComponent,
+        MembersComponent,
+        EventsComponent,
+        RewardsComponent,
+        LoginComponent,
+        MapsComponent,
+        NotificationsComponent,
+        ImagePreloadDirective,
+    ]
 })
 
 export class AdminLayoutModule {}

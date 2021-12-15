@@ -10,6 +10,18 @@ export interface Member {
     gradProg: string,
 }
 
+export const NULL_MEMBER: Member = {
+    name: '',
+    id: '',
+    email: '',
+    contactNo: '',
+    addr: '',
+    city: '',
+    gradUni: '',
+    gradYear: 0,
+    gradProg: '',
+};
+
 export const MOCK_MEMBERS: Member[] = [
     {
         name: 'Lee Yew Tong',

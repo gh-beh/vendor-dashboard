@@ -11,7 +11,7 @@ import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MembersComponent } from './members/members.component';
+import { AlumniComponent } from './alumni/alumni.component';
 import { EventsComponent } from './events/events.component';
 import { RewardsComponent } from './rewards/rewards.component';
 import { LoginComponent } from './login/login.component';

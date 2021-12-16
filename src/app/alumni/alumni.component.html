@@ -1,12 +1,13 @@
 <div class="main-content d-flex flex-column">
     <div *ngIf="showTable" class="clearfix">
+        <div *ngIf="failToLoad" class="text-danger float-left mt-2 ml-5 pl-5"> Failed to load member listing! Loading mock data instead...</div>
         <button class="float-right btn btn-lg btn-danger" (click)="addMember()">Add New</button>
     </div>
     <div class="card flex-grow-1">
         <div class="card-header card-header-danger clearfix">
             <div class="float-left">
-                <h4 class="card-title">Members</h4>
-                <p class="card-category">Member information table listing</p>
+                <h4 class="card-title">Alumni</h4>
+                <p class="card-category">Alumni information table listing</p>
             </div>
             <form *ngIf="showTable" class="float-right">
                 <div class="input-group no-border">
@@ -35,36 +36,36 @@
                         Contact No.
                     </th>
                     <th class="col-3">
-                        Address
+                        Graduating Campus
                     </th>
                     <th class="col-1">
-                        City
+                        Level Of Study
                     </th>
                     <th class="col-1"><!--Empty header for edit button--></th>
                 </tr>
                 </thead>
-                <tbody *ngFor="let member of displayMembers">
+                <tbody *ngFor="let alumni of displayAlumni">
                 <tr class="d-flex">
                     <td class="col-1 align-self-center">
-                        {{member.id}}
+                        {{alumni.studentId}}
                     </td>
                     <td class="col-3 align-self-center">
-                        {{member.name}}
+                        {{alumni.name}}
                     </td>
                     <td class="col-2 align-self-center">
-                        {{member.email}}
+                        {{alumni.personalEmail}}
                     </td>
                     <td class="col-1 align-self-center">
-                        {{member.contactNo}}
+                        {{alumni.studentHandphone}}
                     </td>
                     <td class="col-3 align-self-center">
-                        {{member.addr}}
+                        {{alumni.graduatingCampus}}
                     </td>
                     <td class="col-1 align-self-center">
-                        {{member.city}}
+                        {{alumni.levelOfStudy}}
                     </td>
                     <td class="col-1 text-center align-self-center">
-                        <button class="btn btn-info btn-sm" (click)="editMember(member);">Edit</button>
+                        <button class="btn btn-info btn-sm" (click)="editAlumni(alumni);">Edit</button>
                     </td>
                 </tr>
                 </tbody>
@@ -76,7 +77,17 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formMember.name" name="name">
+                            <input matInput [(ngModel)]="formAlumni.name" name="name">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Identification Card
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="formAlumni.identificationCard" name="identificationCard">
                         </mat-form-field>
                     </div>
                 </div>
@@ -86,57 +97,47 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formMember.email" name="email">
+                            <input matInput [(ngModel)]="formAlumni.personalEmail" name="personalEmail">
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
-                        Contact No.
+                        Student Handphone
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formMember.contactNo" name="contactNo">
+                            <input matInput [(ngModel)]="formAlumni.studentHandphone" name="studentHandphone">
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
-                        Address
+                        Student Telephone Number
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formMember.addr" name="addr">
+                            <input matInput [(ngModel)]="formAlumni.studentTelephoneNumber" name="studentTelephoneNumber">
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
-                        City
+                        Graduating Campus
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formMember.city" name="city">
+                            <input matInput [(ngModel)]="formAlumni.graduatingCampus" name="graduatingCampus">
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
-                        Graduating Institution
+                        Year of Graduation
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formMember.gradUni" name="gradUni">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2 text-primary align-self-center">
-                        Graduating Year
-                    </div>
-                    <div class="col-8">
-                        <mat-form-field class="example-full-width">
-                            <input matInput type="number" [(ngModel)]="formMember.gradYear" name="gradYear">
+                            <input matInput type="number" [(ngModel)]="formAlumni.yearOfGraduation" name="yearOfGraduation">
                         </mat-form-field>
                     </div>
                 </div>
@@ -146,7 +147,27 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formMember.gradProg" name="gradProg">
+                            <input matInput [(ngModel)]="formAlumni.graduatingProgramme" name="graduatingProgramme">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Graduated Programme Name
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="formAlumni.graduatedProgrammeName" name="graduatedProgrammeName">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf="createAlumni" class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Temporary Password
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput [formControl]="tempPassword">
                         </mat-form-field>
                     </div>
                 </div>

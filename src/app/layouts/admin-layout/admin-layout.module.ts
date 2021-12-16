@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { MembersComponent } from '../../members/members.component';
+import { AlumniComponent } from '../../alumni/alumni.component';
 import { EventsComponent } from '../../events/events.component';
 import { RewardsComponent } from '../../rewards/rewards.component';
 import { LoginComponent } from '../../login/login.component';
@@ -38,7 +38,7 @@ import {ImagePreloadDirective} from './directives/img-preload.directive';
     ],
     declarations: [
         DashboardComponent,
-        MembersComponent,
+        AlumniComponent,
         EventsComponent,
         RewardsComponent,
         LoginComponent,

@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {IntiEvent, NULL_EVENT} from '../events/event';
 import {catchError} from 'rxjs/operators';
-import {Member, NULL_MEMBER} from '../members/member';
+import {Alumni, NULL_MEMBER} from '../alumni/alumni';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MembersService {
+export class AlumniService {
 
-  api = environment.dbApiUrl + 'member';
+  api = environment.dbApiUrl + 'alumni';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -23,32 +22,32 @@ export class MembersService {
     }
   }
 
-  getMembers(): Observable<Member[]> {
-    return this.httpClient.get<Member[]>(this.api)
+  getMembers(): Observable<Alumni[]> {
+    return this.httpClient.get<Alumni[]>(this.api)
         .pipe(
-            catchError(this.handleError<Member[]>('getMembers', []))
+            catchError(this.handleError<Alumni[]>('getMembers', []))
         );
   }
 
-  getMember(id: number): Observable<Member> {
-    return this.httpClient.get<Member>(this.api + '/' + id.toString())
+  getMember(id: number): Observable<Alumni> {
+    return this.httpClient.get<Alumni>(this.api + '/' + id.toString())
         .pipe(
-            catchError(this.handleError<Member>('getMember with id ' + id.toString, NULL_MEMBER))
+            catchError(this.handleError<Alumni>('getMember with id ' + id.toString, NULL_MEMBER))
         );
   }
 
-  addMember(member: Member): Observable<any> {
-    const {id, ...body} = member;
+  addMember(member: Alumni): Observable<any> {
+    const {alumniId, ...body} = member;
     return this.httpClient.post<any>(this.api + '/add', body)
         .pipe(
             catchError(this.handleError<any>('addMember with member ' + member.toString(), {}))
         );
   }
 
-  updateMember(member: Member): Observable<any> {
-    return this.httpClient.post<any>(this.api + '/update/' + member.id.toString(), event)
+  updateMember(member: Alumni): Observable<any> {
+    return this.httpClient.post<any>(this.api + '/update/' + member.alumniId.toString(), event)
         .pipe(
-            catchError(this.handleError<any>('updateMember with id ' + member.id.toString(), {}))
+            catchError(this.handleError<any>('updateMember with id ' + member.alumniId.toString(), {}))
         );
   }
 

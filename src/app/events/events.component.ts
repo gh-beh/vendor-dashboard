@@ -70,8 +70,10 @@ export class EventsComponent implements OnInit, OnDestroy {
     // POST here
     const submitEvent = {...this.formEvent};
     submitEvent.startDate = this.parseISO(this.startDate.value);
-    submitEvent.endDate = this.parseISO(this.startDate.value);
-    if (this.createEvent) { this.eventService.addEvent(submitEvent); } else { this.eventService.updateEvent(submitEvent); }
+    submitEvent.endDate = this.parseISO(this.endDate.value);
+    if (submitEvent.image === '') { submitEvent.image = 'no image provided'; }
+    const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
+    response.pipe(takeUntil(this.ngUnsub)).subscribe();
     this.hideForm();
   }
 
@@ -82,7 +84,8 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   parseISO(isoStr: string): string {
     const date = new Date(isoStr);
-    return date.getDate().toString() + '/' + date.getMonth().toString() + '/' + date.getFullYear();
+    console.log(isoStr);
+    return date.getDate().toString() + '/' + (date.getMonth() + 1).toString() + '/' + date.getFullYear();
   }
 
   ngOnDestroy(): any {

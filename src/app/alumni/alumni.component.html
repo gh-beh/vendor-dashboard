@@ -24,7 +24,7 @@
                 <thead class=" text-primary">
                 <tr class="d-flex">
                     <th class="col-1">
-                        ID
+                        Student ID
                     </th>
                     <th class="col-3">
                         Name
@@ -72,6 +72,15 @@
             </table>
             <form *ngIf="showForm">
                 <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Student ID
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="formAlumni.studentId" name="studentId">
+                        </mat-form-field>
+                    </div>
+                </div><div class="row">
                     <div class="col-2 text-primary align-self-center">
                         Name
                     </div>
@@ -137,7 +146,7 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput type="number" [(ngModel)]="formAlumni.yearOfGraduation" name="yearOfGraduation">
+                            <input matInput [(ngModel)]="formAlumni.yearOfGraduation" name="yearOfGraduation">
                         </mat-form-field>
                     </div>
                 </div>
@@ -158,6 +167,19 @@
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
                             <input matInput [(ngModel)]="formAlumni.graduatedProgrammeName" name="graduatedProgrammeName">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Level of Study
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="formAlumni.levelOfStudy" name="status" required>
+                                <mat-option value="diploma">Diploma</mat-option>
+                                <mat-option value="degree">Degree</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                 </div>

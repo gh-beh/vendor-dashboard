@@ -3,6 +3,7 @@ import {Alumni, MOCK_MEMBERS, NULL_MEMBER} from './alumni';
 import {AlumniService} from '../services/alumni.service';
 import {Subject} from 'rxjs';
 import {FormControl} from '@angular/forms';
+import {take, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-profile',
@@ -30,7 +31,7 @@ export class AlumniComponent implements OnInit, OnDestroy {
     this.mockMembers.sort((a, b) => a.gradYear < b.gradYear ? -1 : a.gradYear === b.gradYear ? 0 : 1);
     this.displayMembers = this.mockMembers;
     */
-    this.memberService.getMembers()
+    this.memberService.getMembers().pipe(takeUntil(this.ngUnsub))
         .subscribe(members => {
           this.displayAlumni = (members.length === 0 ? MOCK_MEMBERS : members);
           this.failToLoad = true;
@@ -66,7 +67,8 @@ export class AlumniComponent implements OnInit, OnDestroy {
   submitForm() {
     // POST here
     const submitAlumni = {...this.formAlumni};
-    if (this.createAlumni) { this.memberService.addMember(submitAlumni); } else { this.memberService.updateMember(submitAlumni); }
+    const response = this.createAlumni ? this.memberService.addMember(submitAlumni) : this.memberService.updateMember(submitAlumni);
+    response.pipe(takeUntil(this.ngUnsub)).subscribe();
     this.hideForm();
   }
 

@@ -45,7 +45,7 @@ export class AlumniService {
   }
 
   updateMember(member: Alumni): Observable<any> {
-    return this.httpClient.post<any>(this.api + '/update/' + member.alumniId.toString(), event)
+    return this.httpClient.post<any>(this.api + '/update/' + member.alumniId.toString(), member)
         .pipe(
             catchError(this.handleError<any>('updateMember with id ' + member.alumniId.toString(), {}))
         );

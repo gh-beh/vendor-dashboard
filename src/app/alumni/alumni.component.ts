@@ -13,7 +13,7 @@ import {take, takeUntil} from 'rxjs/operators';
 export class AlumniComponent implements OnInit, OnDestroy {
   createAlumni: boolean;
   failToLoad = false;
-  displayAlumni = MOCK_MEMBERS;
+  displayAlumni = [];
   mockAlumni: Alumni[];
   showTable: boolean;
   showForm: boolean;
@@ -33,8 +33,8 @@ export class AlumniComponent implements OnInit, OnDestroy {
     */
     this.memberService.getMembers().pipe(takeUntil(this.ngUnsub))
         .subscribe(members => {
+          this.failToLoad = members.length === 0;
           this.displayAlumni = (members.length === 0 ? MOCK_MEMBERS : members);
-          this.failToLoad = true;
         });
     this.showTable = true;
     this.showForm = false;

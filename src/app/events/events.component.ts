@@ -11,6 +11,7 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./events.component.css']
 })
 export class EventsComponent implements OnInit, OnDestroy {
+  defaultImage = 'assets/img/img-default.png';
   startDate = new FormControl('');
   endDate = new FormControl('');
   displayEvents: IntiEvent[];
@@ -20,6 +21,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   formEvent: IntiEvent;
   emptyEvent: IntiEvent;
   createEvent: boolean;
+  imageSrc = '';
 
   private ngUnsub: Subject<any> = new Subject();
 
@@ -71,6 +73,9 @@ export class EventsComponent implements OnInit, OnDestroy {
     const submitEvent = {...this.formEvent};
     submitEvent.startDate = this.parseISO(this.startDate.value);
     submitEvent.endDate = this.parseISO(this.endDate.value);
+    // POST as DataURI, breaks SQL due to string length
+    // submitEvent.image = this.imageSrc;
+    console.log(this.imageSrc.length);
     if (submitEvent.image === '') { submitEvent.image = 'no image provided'; }
     const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
     response.pipe(takeUntil(this.ngUnsub)).subscribe();
@@ -86,6 +91,22 @@ export class EventsComponent implements OnInit, OnDestroy {
     const date = new Date(isoStr);
     console.log(isoStr);
     return date.getDate().toString() + '/' + (date.getMonth() + 1).toString() + '/' + date.getFullYear();
+  }
+
+  readURL(event: Event): void {
+    if ('files' in event.target && event.target['files'][0]) {
+      const file = event.target['files'][0];
+      console.log(file);
+
+      const reader = new FileReader();
+      reader.onload = e => this.imageSrc = reader.result as string;
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage(): void {
+    this.imageSrc = this.defaultImage;
   }
 
   ngOnDestroy(): any {

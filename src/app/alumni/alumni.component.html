@@ -62,7 +62,7 @@
                         {{alumni.graduatingCampus}}
                     </td>
                     <td class="col-1 align-self-center">
-                        {{alumni.levelOfStudy}}
+                        {{alumni.levelOfStudy | titlecase}}
                     </td>
                     <td class="col-1 text-center align-self-center">
                         <button class="btn btn-info btn-sm" (click)="editAlumni(alumni);">Edit</button>
@@ -180,16 +180,6 @@
                                 <mat-option value="diploma">Diploma</mat-option>
                                 <mat-option value="degree">Degree</mat-option>
                             </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div *ngIf="createAlumni" class="row">
-                    <div class="col-2 text-primary align-self-center">
-                        Temporary Password
-                    </div>
-                    <div class="col-8">
-                        <mat-form-field class="example-full-width">
-                            <input matInput [formControl]="tempPassword">
                         </mat-form-field>
                     </div>
                 </div>

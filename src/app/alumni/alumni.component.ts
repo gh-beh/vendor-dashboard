@@ -19,7 +19,6 @@ export class AlumniComponent implements OnInit, OnDestroy {
   showForm: boolean;
   formAlumni: Alumni;
   emptyAlumni: Alumni;
-  tempPassword = new FormControl('');
 
   private ngUnsub: Subject<any> = new Subject();
 

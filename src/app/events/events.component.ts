@@ -55,6 +55,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   displayForm(event: IntiEvent) {
     this.formEvent = {...event};
+    this.imageSrc = this.formEvent.image;
     this.showTable = false;
     this.showForm = true;
     this.startDate.setValue(this.parseDate(event.startDate).toISOString());
@@ -62,6 +63,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   hideForm() {
+    this.imageSrc = '';
     this.showTable = true;
     this.showForm = false;
     this.formEvent = {...this.emptyEvent};
@@ -75,9 +77,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     submitEvent.startDate = this.parseISO(this.startDate.value);
     submitEvent.endDate = this.parseISO(this.endDate.value);
 
-    if (submitEvent.image === '') {
-      submitEvent.image = 'no image provided';
-    } else {
+    if (this.imageSrc !== '') {
       // POST to imgur and retrieve link
       const imgurLink = this.imgur.uploadImg(this.extractData(this.imageSrc));
       imgurLink.pipe(takeUntil(this.ngUnsub)).subscribe(res => {
@@ -85,6 +85,10 @@ export class EventsComponent implements OnInit, OnDestroy {
         const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
         response.pipe(takeUntil(this.ngUnsub)).subscribe();
       });
+    } else {
+      submitEvent.image = '';
+      const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
+      response.pipe(takeUntil(this.ngUnsub)).subscribe();
     }
     this.hideForm();
   }

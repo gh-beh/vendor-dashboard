@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IntiEvent, MOCK_EVENTS, NULL_EVENT} from './event';
 import {EventsService} from '../services/events.service';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
+import {ImgurService} from '../services/imgur.service';
 
 @Component({
   selector: 'app-table-list',
@@ -25,7 +26,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   private ngUnsub: Subject<any> = new Subject();
 
-  constructor(private eventService: EventsService) { }
+  constructor(private eventService: EventsService, private imgur: ImgurService) { }
 
   ngOnInit() {
     /* MOCKING
@@ -69,17 +70,28 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    // POST here
+    // Create JSON body and parse dates
     const submitEvent = {...this.formEvent};
     submitEvent.startDate = this.parseISO(this.startDate.value);
     submitEvent.endDate = this.parseISO(this.endDate.value);
-    // POST as DataURI, breaks SQL due to string length
-    // submitEvent.image = this.imageSrc;
-    console.log(this.imageSrc.length);
-    if (submitEvent.image === '') { submitEvent.image = 'no image provided'; }
-    const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
-    response.pipe(takeUntil(this.ngUnsub)).subscribe();
+
+    if (submitEvent.image === '') {
+      submitEvent.image = 'no image provided';
+    } else {
+      // POST to imgur and retrieve link
+      const imgurLink = this.imgur.uploadImg(this.extractData(this.imageSrc));
+      imgurLink.pipe(takeUntil(this.ngUnsub)).subscribe(res => {
+        submitEvent.image = res['data']['link'];
+        const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
+        response.pipe(takeUntil(this.ngUnsub)).subscribe();
+      });
+    }
     this.hideForm();
+  }
+
+  extractData(dataUrl: string): string {
+    // TODO: Add error checking for dataURL base64 extraction
+    return dataUrl.split(',')[1];
   }
 
   parseDate(dateStr: string): Date {
@@ -106,7 +118,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   removeImage(): void {
-    this.imageSrc = this.defaultImage;
+    this.imageSrc = '';
   }
 
   ngOnDestroy(): any {

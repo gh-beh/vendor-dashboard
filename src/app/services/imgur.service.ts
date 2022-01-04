@@ -26,7 +26,7 @@ export class ImgurService {
     const formData = new FormData();
     formData.append('image', base64);
     formData.append('type', 'base64');
-    return this.httpClient.post<any>(this.api + 'upload', base64, options)
+    return this.httpClient.post<any>(this.api + 'upload', formData, options)
         .pipe(
             catchError(this.handleError<any>('Upload to Imgur failed for input ' + base64, {}))
         );

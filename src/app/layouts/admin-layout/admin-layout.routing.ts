@@ -7,11 +7,15 @@ import { RewardsComponent } from '../../rewards/rewards.component';
 import { LoginComponent } from '../../login/login.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
+import {FaqComponent} from '../../faq/faq.component';
+import {FaqCategoryComponent} from '../../faq-categories/faq-categories.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'member-listing',   component: AlumniComponent },
     { path: 'event-activities',     component: EventsComponent },
+    { path: 'faq',     component: FaqComponent },
+    { path: 'faq-categories',     component: FaqCategoryComponent },
     { path: 'loyalty-rewards',     component: RewardsComponent },
     // { path: 'login',          component: LoginComponent },
     // { path: 'maps',           component: MapsComponent },

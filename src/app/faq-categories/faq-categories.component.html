@@ -1,0 +1,89 @@
+<div class="main-content d-flex flex-column">
+    <div *ngIf="showTable" class="clearfix">
+        <button class="float-right btn btn-lg btn-danger" (click)="addFaqCat()">Add New</button>
+    </div>
+    <div class="card flex-grow-1">
+        <div class="card-header card-header-danger clearfix">
+            <div class="float-left">
+                <h4 class="card-title">FAQ Categories</h4>
+                <p class="card-category">FAQ Categories table listing</p>
+            </div>
+            <form *ngIf="showTable" class="float-right">
+                <div class="input-group no-border">
+                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
+                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <table *ngIf="showTable" class="table">
+                <thead class=" text-primary">
+                <tr class="d-flex">
+                    <th class="col-2">
+                        No.
+                    </th>
+                    <th class="col-6">
+                        Category Name
+                    </th>
+                    <th class="col-2">
+                        Record Status
+                    </th>
+                    <th class="col-2"><!--Empty header for edit button--></th>
+                </tr>
+                </thead>
+                <tbody *ngFor="let faqCat of displayFaqCats, let i = index">
+                <tr class="d-flex">
+                    <td class="col-2 align-self-center">
+                        {{i+1}}
+                    </td>
+                    <td class="col-6 align-self-center">
+                        {{faqCat.name}}
+                    </td>
+                    <td class="col-2 align-self-center">
+                        {{faqCat.recordStatus ? 'Active' : 'Not Active'}}
+                    </td>
+                    <td class="col-2 text-center align-self-center">
+                        <button class="btn btn-info btn-sm" (click)="editFaqCat(faqCat);">Edit</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <form *ngIf="showForm">
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Category Name
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="formFaqCat.name" name="name" matInput required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Record Status
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="formFaqCat.recordStatus" name="recordStatus" required>
+                                <mat-option value="true">Active</mat-option>
+                                <mat-option value="false">Not Active</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-sm-5">
+                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                    </div>
+                    <div class="col-lg-1 col-sm-2"></div>
+                    <div class="col-lg-2 col-sm-5">
+                        <button type="button" class="btn btn-dark btn-lg w-100" (click)="hideForm()">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

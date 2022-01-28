@@ -4,12 +4,14 @@ import { RouterModule } from '@angular/router';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        CdkAccordionModule,
+    ],
   declarations: [
     NavbarComponent,
     SidebarComponent

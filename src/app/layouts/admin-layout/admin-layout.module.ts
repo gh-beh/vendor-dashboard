@@ -19,6 +19,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatIconModule} from '@angular/material/icon';
 import {ImagePreloadDirective} from './directives/img-preload.directive';
+import {FaqComponent} from '../../faq/faq.component';
+import {FaqCategoryComponent} from '../../faq-categories/faq-categories.component';
 
 @NgModule({
     imports: [
@@ -39,6 +41,8 @@ import {ImagePreloadDirective} from './directives/img-preload.directive';
     declarations: [
         DashboardComponent,
         AlumniComponent,
+        FaqComponent,
+        FaqCategoryComponent,
         EventsComponent,
         RewardsComponent,
         LoginComponent,

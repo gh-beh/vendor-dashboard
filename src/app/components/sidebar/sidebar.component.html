@@ -1,7 +1,7 @@
 <div class="logo">
     <a disabled class="simple-text">
         <div class="logo-img">
-            <img src="assets/img/INTI-Logo.jpg"/>
+            <img src="assets/img/INTI-Logo.jpg" alt="INTI Logo"/>
         </div>
         INTIcredibles
     </a>
@@ -62,6 +62,41 @@
                 <i class="material-icons">{{menuItem.icon}}</i>
                 <p>{{menuItem.title}}</p>
             </a>
+        </li>
+        <li routerLinkActive="active" class="nav-item accordion-shadow">
+            <cdk-accordion class="">
+                <cdk-accordion-item #accordionItem="cdkAccordionItem"
+                                    class=""
+                                    role="button"
+                                    tabindex="0"
+                                    [attr.id]="'faq-accordion-header'"
+                                    [attr.aria-expanded]="accordionItem.expanded"
+                                    [attr.aria-controls]="'faq-accordion-body'">
+                    <a class="nav-link d-flex pr-0 justify-content-between" (click)="accordionItem.toggle()" role="button">
+                        <div>
+                            <i class="material-icons">help_outline</i>
+                            <p>FAQ</p>
+                        </div>
+                        <i class="material-icons mr-0">{{accordionItem.expanded ? "expand_less" : "expand_more"}}</i>
+                    </a>
+                    <div role="region"
+                         [style.display]="accordionItem.expanded ? '' : 'none'"
+                         [attr.id]="'faq-accordion-body'"
+                         [attr.aria-labelledby]="'faq-accordion-header'"
+                         routerLinkActive="active">
+                        <ul class="nav mt-0">
+                            <li></li>
+                            <li routerLinkActive="active" *ngFor="let item of faqItems" class="{{item.class}} nav-item">
+                                <a class="nav-link" [routerLink]="[item.path]">
+                                    <i class="material-icons">{{item.icon}}</i>
+                                    <p>{{item.title}}</p>
+                                </a>
+                            </li>
+                            <li class="pb-3"></li>
+                        </ul>
+                    </div>
+                </cdk-accordion-item>
+            </cdk-accordion>
         </li>
     </ul>
 </div>

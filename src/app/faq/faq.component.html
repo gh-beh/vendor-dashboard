@@ -1,0 +1,123 @@
+<div class="main-content d-flex flex-column">
+    <div *ngIf="showTable" class="clearfix">
+        <button class="float-right btn btn-lg btn-danger" (click)="addFaq()">Add New</button>
+    </div>
+    <div class="card flex-grow-1">
+        <div class="card-header card-header-danger clearfix">
+            <div class="float-left">
+                <h4 class="card-title">Frequently Asked Questions</h4>
+                <p class="card-category">Frequently asked questions table listing</p>
+            </div>
+            <form *ngIf="showTable" class="float-right">
+                <div class="input-group no-border">
+                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
+                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <table *ngIf="showTable" class="table">
+                <thead class=" text-primary">
+                <tr class="d-flex">
+                    <th class="col-1">
+                        No.
+                    </th>
+                    <th class="col-3">
+                        Question
+                    </th>
+                    <th class="col-3">
+                        Answer
+                    </th>
+                    <th class="col-3">
+                        Category
+                    </th>
+                    <th class="col-1">
+                        Record Status
+                    </th>
+                    <th class="col-1"><!--Empty header for edit button--></th>
+                </tr>
+                </thead>
+                <tbody *ngFor="let faq of displayFaqs, let i = index">
+                <tr class="d-flex">
+                    <td class="col-1 align-self-center">
+                        {{i+1}}
+                    </td>
+                    <td class="col-3 align-self-center">
+                        {{faq.question}}
+                    </td>
+                    <td class="col-3 align-self-center">
+                        {{faq.answer}}
+                    </td>
+                    <td class="col-3 align-self-center">
+                        {{faqCats[faq.faqCatId - 1].name}}
+                    </td>
+                    <td class="col-1 align-self-center">
+                        {{faq.recordStatus ? 'Shown' : 'Hidden'}}
+                    </td>
+                    <td class="col-1 text-center align-self-center">
+                        <button class="btn btn-info btn-sm" (click)="editFaq(faq);">Edit</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <form *ngIf="showForm">
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Question
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="formFaq.question" name="question" matInput required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Answer
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="example-full-width">
+                            <textarea [(ngModel)]="formFaq.answer" name="answer" matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        FAQ Category
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field class="example-full-width">
+                            <mat-select *ngFor="let faqCat of faqCats" [(ngModel)]="formFaq.faqCatId" name="faqCatId" required>
+                                <mat-option value="{{faqCat.faqCatId}}">{{faqCat.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-primary align-self-center">
+                        Record Status
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="formFaq.recordStatus" name="recordStatus" required>
+                                <mat-option value="true">Shown</mat-option>
+                                <mat-option value="false">Hidden</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-sm-5">
+                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                    </div>
+                    <div class="col-lg-1 col-sm-2"></div>
+                    <div class="col-lg-2 col-sm-5">
+                        <button type="button" class="btn btn-dark btn-lg w-100" (click)="hideForm()">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

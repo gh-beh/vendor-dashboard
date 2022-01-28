@@ -17,6 +17,11 @@ export const ROUTES: RouteInfo[] = [
     // { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
 ];
 
+export const FAQ_ITEMS: RouteInfo[] = [
+    { path: '/faq', title: 'Questions',  icon: 'question_answer', class: '' },
+    { path: '/faq-categories', title: 'Categories',  icon: 'format_list_bulleted', class: '' },
+];
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -24,16 +29,14 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
-
+  faqItems: RouteInfo[];
   constructor() { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.faqItems = FAQ_ITEMS.filter(item => item);
   }
   isMobileMenu() {
-      if ($(window).width() > 991) {
-          return false;
-      }
-      return true;
+      return $(window).width() <= 991;
   };
 }

@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminLayoutRoutes } from './admin-layout.routing';
+import { AdminLayoutRoutingModule} from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { AlumniComponent } from '../../alumni/alumni.component';
 import { EventsComponent } from '../../events/events.component';
 import { RewardsComponent } from '../../rewards/rewards.component';
-import { LoginComponent } from '../../login/login.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import {MatButtonModule} from '@angular/material/button';
@@ -21,11 +20,20 @@ import {MatIconModule} from '@angular/material/icon';
 import {ImagePreloadDirective} from './directives/img-preload.directive';
 import {FaqComponent} from '../../faq/faq.component';
 import {FaqCategoryComponent} from '../../faq-categories/faq-categories.component';
+import {AdminLayoutComponent} from './admin-layout.component';
+import {ComponentsModule} from '../../components/components.module';
+import {EventsService} from '../../services/events.service';
+import {AlumniService} from '../../services/alumni.service';
+import {FaqService} from '../../services/faq.service';
+import {FaqCatService} from '../../services/faq-cat.service';
+import {ImgurService} from '../../services/imgur.service';
 
 @NgModule({
     imports: [
         CommonModule,
-        RouterModule.forChild(AdminLayoutRoutes),
+        ComponentsModule,
+        AdminLayoutRoutingModule,
+        RouterModule,
         FormsModule,
         ReactiveFormsModule,
         MatButtonModule,
@@ -39,13 +47,13 @@ import {FaqCategoryComponent} from '../../faq-categories/faq-categories.componen
         MatNativeDateModule
     ],
     declarations: [
+        AdminLayoutComponent,
         DashboardComponent,
         AlumniComponent,
         FaqComponent,
         FaqCategoryComponent,
         EventsComponent,
         RewardsComponent,
-        LoginComponent,
         MapsComponent,
         NotificationsComponent,
         ImagePreloadDirective,

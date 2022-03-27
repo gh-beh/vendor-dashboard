@@ -8,9 +8,9 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'computer', class: '' },
-    { path: '/member-listing', title: 'Alumni Listing',  icon: 'person', class: '' },
-    { path: '/event-activities', title: 'Event & Activities',  icon: 'account_balance', class: '' },
+    { path: '/admin/dashboard', title: 'Dashboard',  icon: 'computer', class: '' },
+    { path: '/admin/member-listing', title: 'Alumni Listing',  icon: 'person', class: '' },
+    { path: '/admin/event-activities', title: 'Event & Activities',  icon: 'account_balance', class: '' },
     // { path: '/loyalty-rewards', title: 'Loyalty & Rewards',  icon: 'redeem', class: '' },
     // { path: '/login', title: 'Icons',  icon:'bubble_chart', class: '' },
     // { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
@@ -18,8 +18,8 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 export const FAQ_ITEMS: RouteInfo[] = [
-    { path: '/faq', title: 'Questions',  icon: 'question_answer', class: '' },
-    { path: '/faq-categories', title: 'Categories',  icon: 'format_list_bulleted', class: '' },
+    { path: '/admin/faq', title: 'Questions',  icon: 'question_answer', class: '' },
+    { path: '/admin/faq-categories', title: 'Categories',  icon: 'format_list_bulleted', class: '' },
 ];
 
 @Component({
@@ -28,7 +28,7 @@ export const FAQ_ITEMS: RouteInfo[] = [
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  menuItems: any[];
+  menuItems: RouteInfo[];
   faqItems: RouteInfo[];
   constructor() { }
 

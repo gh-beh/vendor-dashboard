@@ -3,13 +3,13 @@ export interface Faq {
     answer: string,
     faqCatId: number,
     faqId: number,
-    recordStatus: boolean,
+    recordStatus: string,
 }
 
 export interface FaqCat {
     faqCatId: number,
     name: string,
-    recordStatus: boolean,
+    recordStatus: string,
 }
 
 export const NULL_FAQ: Faq = {
@@ -17,30 +17,30 @@ export const NULL_FAQ: Faq = {
     answer: '',
     faqCatId: 0,
     faqId: 0,
-    recordStatus: true,
+    recordStatus: '',
 };
 
 export const NULL_FAQ_CAT: FaqCat = {
     faqCatId: 0,
     name: '',
-    recordStatus: true,
+    recordStatus: '',
 };
 
 export const MOCK_FAQ_CATS: FaqCat[] = [
     {
         faqCatId: 1,
         name: 'Category 1',
-        recordStatus: true,
+        recordStatus: 'true',
     },
     {
         faqCatId: 2,
         name: 'Category 2',
-        recordStatus: true,
+        recordStatus: 'true',
     },
     {
         faqCatId: 3,
         name: 'Category 3',
-        recordStatus: false,
+        recordStatus: 'false',
     },
 ];
 
@@ -50,36 +50,36 @@ export const MOCK_FAQS: Faq[] = [
         answer: 'Yes',
         faqCatId: 1,
         faqId: 1,
-        recordStatus: true,
+        recordStatus: 'true',
     }, {
         question: 'Who?',
         answer: 'Yes',
         faqCatId: 2,
         faqId: 2,
-        recordStatus: false,
+        recordStatus: 'false',
     }, {
         question: 'When?',
         answer: 'Yes',
         faqCatId: 3,
         faqId: 3,
-        recordStatus: true,
+        recordStatus: 'true',
     }, {
         question: 'Where?',
         answer: 'Yes',
         faqCatId: 2,
         faqId: 4,
-        recordStatus: true,
+        recordStatus: 'true',
     }, {
         question: 'Why?',
         answer: 'Yes',
         faqCatId: 1,
         faqId: 5,
-        recordStatus: true,
+        recordStatus: 'true',
     }, {
         question: 'How?',
         answer: 'Yes',
         faqCatId: 1,
         faqId: 6,
-        recordStatus: true,
+        recordStatus: 'true',
     },
 ];

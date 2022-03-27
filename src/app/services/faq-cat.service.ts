@@ -17,6 +17,7 @@ export class FaqCatService {
     return (error: any): Observable<T> => {
       console.error(error);
       console.log(operation);
+      if (result.hasOwnProperty('error')) { result['error'] = error; }
       return of(result as T);
     }
   }
@@ -44,16 +45,17 @@ export class FaqCatService {
   }
 
   updateFaqCat(faqCat: FaqCat): Observable<any> {
-    return this.httpClient.post<any>(this.api + '/update/' + faqCat.faqCatId.toString(), faqCat)
+    const {faqCatId, ...body} = faqCat
+    return this.httpClient.put<any>(this.api + '/update/' + faqCatId.toString(), body)
         .pipe(
             catchError(this.handleError<any>('updateFaq with id ' + faqCat.faqCatId.toString(), {}))
         );
   }
 
   deleteFaqCat(id: number): Observable<any> {
-    return this.httpClient.get<any>(this.api + '/delete/' + id.toString())
+    return this.httpClient.delete<any>(this.api + '/delete/' + id.toString())
         .pipe(
-            catchError(this.handleError<any>('deleteFaqCat with id ' + id.toString(), {}))
+            catchError(this.handleError<any>('deleteFaqCat with id ' + id.toString(), { error: ''}))
         );
   }
 }

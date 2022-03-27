@@ -44,14 +44,15 @@ export class FaqService {
   }
 
   updateFaq(faq: Faq): Observable<any> {
-    return this.httpClient.post<any>(this.api + '/update/' + faq.faqId.toString(), faq)
+    const {faqId, faqCatId, ...body} = faq;
+    return this.httpClient.put<any>(this.api + '/update/' + faqId.toString(), {...body, faqCatId: faqCatId.toString()})
         .pipe(
             catchError(this.handleError<any>('updateFaq with id ' + faq.faqId.toString(), {}))
         );
   }
 
   deleteFaq(id: number): Observable<any> {
-    return this.httpClient.get<any>(this.api + '/delete/' + id.toString())
+    return this.httpClient.delete<any>(this.api + '/delete/' + id.toString())
         .pipe(
             catchError(this.handleError<any>('deleteFaq with id ' + id.toString(), {}))
         );

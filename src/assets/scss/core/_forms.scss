@@ -435,3 +435,8 @@ form .ng-valid{
 .mat-input-ripple {
     background-color: $brand-primary;
 }
+
+.form-error {
+  color: $brand-danger;
+  align-self: center;
+}

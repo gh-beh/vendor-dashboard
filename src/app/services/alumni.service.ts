@@ -45,14 +45,15 @@ export class AlumniService {
   }
 
   updateMember(member: Alumni): Observable<any> {
-    return this.httpClient.post<any>(this.api + '/update/' + member.alumniId.toString(), member)
+    const {alumniId, ...body} = member;
+    return this.httpClient.put<any>(this.api + '/update/' + alumniId.toString(), body)
         .pipe(
             catchError(this.handleError<any>('updateMember with id ' + member.alumniId.toString(), {}))
         );
   }
 
   deleteMember(id: number): Observable<any> {
-    return this.httpClient.get<any>(this.api + '/delete/' + id.toString())
+    return this.httpClient.delete<any>(this.api + '/delete/' + id.toString())
         .pipe(
             catchError(this.handleError<any>('deleteMember with id ' + id.toString(), {}))
         );

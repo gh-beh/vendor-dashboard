@@ -10,8 +10,11 @@
             </div>
             <form *ngIf="showTable" class="float-right">
                 <div class="input-group no-border">
-                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
-                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                    <input type="text" [(ngModel)]="searchText" value="" (ngModelChange)="onClearSearch()" class="form-control align-self-center text-white" placeholder="Search...">
+                    <button *ngIf="searchText !== ''" type="button" class="btn btn-outline border-0 shadow-none btn-just-icon text-white" (click)="resetSearch()">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <button mat-raised-button type="button" class="btn btn-white btn-round btn-just-icon" (click)="setDisplay()">
                         <i class="material-icons">search</i>
                     </button>
                 </div>
@@ -42,24 +45,26 @@
                         {{faqCat.name}}
                     </td>
                     <td class="col-2 align-self-center">
-                        {{faqCat.recordStatus ? 'Active' : 'Not Active'}}
+                        {{faqCat.recordStatus === 'true' ? 'Active' : 'Not Active'}}
                     </td>
-                    <td class="col-2 text-center align-self-center">
-                        <button class="btn btn-info btn-sm" (click)="editFaqCat(faqCat);">Edit</button>
+                    <td class="col-2 text-center align-self-center justify-content-between">
+                        <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="editFaqCat(faqCat);"><i class="material-icons">edit</i></button>
+                        <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="removeFaqCat(faqCat.faqCatId)"><i class="material-icons">delete</i></button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <form *ngIf="showForm">
+            <form *ngIf="showForm" [formGroup]="faqCatForm" (ngSubmit)="submitForm()">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
                         Category Name
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="formFaqCat.name" name="name" matInput required>
+                            <input [(ngModel)]="formFaqCat.name" formControlName="name" matInput required>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.name.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -67,16 +72,17 @@
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <mat-select [(ngModel)]="formFaqCat.recordStatus" name="recordStatus" required>
-                                <mat-option value="true">Active</mat-option>
-                                <mat-option value="false">Not Active</mat-option>
+                            <mat-select [(ngModel)]="formFaqCat.recordStatus" formControlName="recordStatus">
+                                <mat-option value="{{'true'}}">Active</mat-option>
+                                <mat-option value="{{'false'}}">Not Active</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.recordStatus.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-lg-2 col-sm-5">
-                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                        <button type="submit" class="btn btn-danger btn-lg w-100">Submit</button>
                     </div>
                     <div class="col-lg-1 col-sm-2"></div>
                     <div class="col-lg-2 col-sm-5">

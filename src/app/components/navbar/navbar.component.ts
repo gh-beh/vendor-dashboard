@@ -1,7 +1,9 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {FAQ_ITEMS, ROUTES} from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -15,14 +17,17 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router) {
+    constructor(location: Location,
+                private element: ElementRef,
+                private router: Router,
+                private httpClient: HttpClient,
+                private route: ActivatedRoute) {
       this.location = location;
           this.sidebarVisible = false;
     }
 
     ngOnInit() {
-      const routes = ROUTES;
-      routes.push(...FAQ_ITEMS);
+      const routes = [...ROUTES, ...FAQ_ITEMS];
       this.listTitles = routes.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -123,5 +128,9 @@ export class NavbarComponent implements OnInit {
           }
       }
       return 'Dashboard';
+    }
+
+    logout() {
+        this.router.navigate(['login'], {relativeTo: this.route.root});
     }
 }

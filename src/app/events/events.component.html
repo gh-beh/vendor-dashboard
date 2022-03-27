@@ -10,10 +10,12 @@
             </div>
             <form *ngIf="showTable" class="float-right">
                 <div class="input-group no-border">
-                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
-                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                    <input type="text" [(ngModel)]="searchText" value="" (ngModelChange)="onClearSearch()" class="form-control align-self-center text-white" placeholder="Search...">
+                    <button *ngIf="searchText !== ''" type="button" class="btn btn-outline border-0 shadow-none btn-just-icon text-white" (click)="resetSearch()">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <button mat-raised-button type="button" class="btn btn-white btn-round btn-just-icon" (click)="setDisplay()">
                         <i class="material-icons">search</i>
-                        <div class="ripple-container"></div>
                     </button>
                 </div>
             </form>
@@ -25,7 +27,7 @@
                         <th class="col-1">
                             No.
                         </th>
-                        <th class="col-3">
+                        <th class="col-md-2 col-lg-2 d-none d-lg-block d-md-block">
                             Image
                         </th>
                         <th class="col-2">
@@ -37,13 +39,13 @@
                         <th class="col-1">
                             End Date
                         </th>
-                        <th class="col-2 text-center">
+                        <th class="col-4 col-md-2 col-lg-2 text-center">
                             Registration Link
                         </th>
                         <th class="col-1">
                             Record Status
                         </th>
-                        <th class="col-1"><!--Empty header for edit button--></th>
+                        <th class="col-2"><!--Empty header for actions--></th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let event of displayEvents, let i = index">
@@ -51,7 +53,7 @@
                         <td class="col-1 align-self-center">
                             {{i+1}}
                         </td>
-                        <td class="col-md-3 col-lg-3 d-none d-lg-block d-md-block align-self-center">
+                        <td class="col-md-2 col-lg-2 d-none d-lg-block d-md-block align-self-center">
                             <img class="img mw-100" src="{{event.image}}" appDefault="assets/img/img-default.png">
                         </td>
                         <td class="col-2 align-self-center">
@@ -63,28 +65,30 @@
                         <td class="col-1 align-self-center">
                             {{event.endDate}}
                         </td>
-                        <td class="col-3 col-md-2 col-lg-2 align-self-center text-center">
+                        <td class="col-4 col-md-2 col-lg-2 align-self-center text-center">
                             <a href="{{event.registerLink}}">{{event.registerLink}}</a>
                         </td>
-                        <td class="col-2 col-md-1 col-lg-1 align-self-center">
+                        <td class="col-1 align-self-center">
                             {{event.status}}
                         </td>
-                        <td class="col-sm-2 col-md-1 col-lg-1 text-center align-self-center">
-                            <button class="btn btn-info btn-sm" (click)="editEvent(event)">Edit</button>
+                        <td class="col-2 text-center align-self-center justify-content-between">
+                            <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="editEvent(event)"><i class="material-icons">edit</i></button>
+                            <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="removeEvent(event.eventId)"><i class="material-icons">delete</i></button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <form *ngIf="showForm">
+            <form *ngIf="showForm" [formGroup]="eventForm" (ngSubmit)="submitForm()">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
                         Event Name
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="formEvent.name" name="name" matInput required>
+                            <input [(ngModel)]="formEvent.name" formControlName="name" matInput required>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.name.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -92,9 +96,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <textarea [(ngModel)]="formEvent.description" name="description" matInput></textarea>
+                            <textarea [(ngModel)]="formEvent.description" formControlName="description" matInput></textarea>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.description.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -102,11 +107,12 @@
                     </div>
                     <div class="col-4">
                         <mat-form-field appearance="fill">
-                            <input matInput [matDatepicker]="startDatePicker" required [formControl]="startDate">
+                            <input matInput [matDatepicker]="startDatePicker" formControlName="startDate">
                             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #startDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.startDate.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -114,11 +120,12 @@
                     </div>
                     <div class="col-4">
                         <mat-form-field appearance="fill">
-                            <input matInput [matDatepicker]="endDatePicker" required [formControl]="endDate">
+                            <input matInput [matDatepicker]="endDatePicker" formControlName="endDate">
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #endDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.endDate.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -126,9 +133,10 @@
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="formEvent.registerLink" name="registerLink" matInput required>
+                            <input [(ngModel)]="formEvent.registerLink" formControlName="registerLink" matInput required>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.registerLink.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -136,13 +144,14 @@
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <mat-select [(ngModel)]="formEvent.status" name="status" required>
+                            <mat-select [(ngModel)]="formEvent.status" formControlName="status" required>
                                 <mat-option value="ongoing">Ongoing</mat-option>
                                 <mat-option value="processing">Processing</mat-option>
                                 <mat-option value="closed">Closed</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.status.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -158,10 +167,11 @@
                         <input type='file' accept="image/*" class="d-none" id="event-img" (change)="readURL($event);" />
                         <button class="btn btn-danger btn-lg" (click)="removeImage();">Remove Image</button>
                     </div>
+                    <div *ngIf="!imgurUpload" class="form-error">Imgur upload failed!</div>
                 </div>
                 <div class="row">
                     <div class="col-lg-2 col-sm-5">
-                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                        <button type="submit" class="btn btn-danger btn-lg w-100">Submit</button>
                     </div>
                     <div class="col-lg-1 col-sm-2"></div>
                     <div class="col-lg-2 col-sm-5">

@@ -4,6 +4,7 @@ import {FaqService} from '../services/faq.service';
 import {FaqCatService} from '../services/faq-cat.service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {FormBuilder, Validators, FormGroup, AbstractControl} from '@angular/forms';
 
 @Component({
   selector: 'app-faq',
@@ -12,17 +13,22 @@ import {Subject} from 'rxjs';
 })
 export class FaqComponent implements OnInit, OnDestroy {
   mockFaqs: Faq[];
+  faqForm: FormGroup;
   displayFaqs: Faq[];
+  faqs: Faq[];
   faqCats: FaqCat[];
+  faqCatNameMapping: {};
   showTable: boolean;
   showForm: boolean;
   formFaq: Faq;
   emptyFaq: Faq;
   createFaq: boolean;
+  submitted: boolean;
+  searchText = '';
 
   private ngUnsub: Subject<any> = new Subject();
 
-  constructor(private faqService: FaqService, private faqCatService: FaqCatService) { }
+  constructor(private faqService: FaqService, private faqCatService: FaqCatService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     /* MOCKING
@@ -35,19 +41,37 @@ export class FaqComponent implements OnInit, OnDestroy {
     */
     this.faqCatService.getFaqCats().pipe(takeUntil(this.ngUnsub))
         .subscribe(res => {
+          this.faqCatNameMapping = {};
           this.faqCats = (res.length === 0 ? MOCK_FAQ_CATS : res);
-          this.faqCats.sort((a, b) =>
-              a.faqCatId < b.faqCatId
-                  ? -1
-                  : a.faqCatId > b.faqCatId ? 1 : 0);
+          this.faqCats.forEach(faqCat => {
+            this.faqCatNameMapping[faqCat.faqCatId] = faqCat.name;
+          });
         });
-    this.faqService.getFaqs().pipe(takeUntil(this.ngUnsub))
-        .subscribe(res =>
-            this.displayFaqs = (res.length === 0 ? MOCK_FAQS : res));
+    this.getFaqs();
     this.showTable = true;
     this.showForm = false;
     this.emptyFaq = NULL_FAQ;
     this.formFaq = this.emptyFaq;
+    this.faqForm = this.formBuilder.group(
+      {
+        question: ['', Validators.required],
+        answer: ['', Validators.required],
+        faqCatId: ['', [Validators.required, Validators.min(1)]],
+        recordStatus: ['', Validators.required],
+      },
+    )
+  }
+
+  getFaqs() {
+    this.faqService.getFaqs().pipe(takeUntil(this.ngUnsub))
+        .subscribe(res => {
+            this.faqs = (res.length === 0 ? MOCK_FAQS : res);
+            this.setDisplay();
+        });
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.faqForm.controls;
   }
 
   addFaq() {
@@ -60,9 +84,15 @@ export class FaqComponent implements OnInit, OnDestroy {
     this.displayForm(faq);
   }
 
+  removeFaq(id: number) {
+    this.faqService.deleteFaq(id).pipe(takeUntil(this.ngUnsub)).subscribe(() =>
+        this.getFaqs());
+  }
+
   displayForm(faq: Faq) {
     this.formFaq = {...faq};
     this.showTable = false;
+    this.submitted = false;
     this.showForm = true;
   }
 
@@ -73,13 +103,36 @@ export class FaqComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
+    this.submitted = true;
+    console.log(this.f);
+    if (this.faqForm.invalid) {return;}
     // POST here
     const submitFaq = {...this.formFaq};
     const response = this.createFaq
         ? this.faqService.addFaq(submitFaq)
         : this.faqService.updateFaq(submitFaq);
-    response.pipe(takeUntil(this.ngUnsub)).subscribe();
-    this.hideForm();
+    response.pipe(takeUntil(this.ngUnsub)).subscribe(() => {
+      this.getFaqs();
+      this.hideForm();
+    });
+  }
+
+  setDisplay() {
+    this.displayFaqs = this.faqs.filter(
+      s => s.question.toLowerCase().includes(this.searchText.toLowerCase())
+        || s.answer.toLowerCase().includes(this.searchText.toLowerCase())
+        || this.faqCatNameMapping[s.faqCatId].toLowerCase().includes(this.searchText.toLowerCase())
+        || s.recordStatus === this.searchText,
+    );
+  }
+
+  resetSearch() {
+    this.searchText = '';
+    this.setDisplay();
+  }
+
+  onClearSearch() {
+    if (this.searchText === '') { this.setDisplay(); }
   }
 
   ngOnDestroy(): any {

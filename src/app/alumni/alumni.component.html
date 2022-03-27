@@ -11,10 +11,12 @@
             </div>
             <form *ngIf="showTable" class="float-right">
                 <div class="input-group no-border">
-                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
-                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                    <input type="text" [(ngModel)]="searchText" value="" (ngModelChange)="onClearSearch()" class="form-control align-self-center text-white" placeholder="Search...">
+                    <button *ngIf="searchText !== ''" type="button" class="btn btn-outline border-0 shadow-none btn-just-icon text-white" (click)="resetSearch()">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <button mat-raised-button type="button" class="btn btn-white btn-round btn-just-icon" (click)="setDisplay()">
                         <i class="material-icons">search</i>
-                        <div class="ripple-container"></div>
                     </button>
                 </div>
             </form>
@@ -58,37 +60,41 @@
                     <td class="col-1 align-self-center">
                         {{alumni.studentHandphone}}
                     </td>
-                    <td class="col-3 align-self-center">
+                    <td class="col-2 align-self-center">
                         {{alumni.graduatingCampus}}
                     </td>
                     <td class="col-1 align-self-center">
                         {{alumni.levelOfStudy | titlecase}}
                     </td>
-                    <td class="col-1 text-center align-self-center">
-                        <button class="btn btn-info btn-sm" (click)="editAlumni(alumni);">Edit</button>
+                    <td class="col-2 text-center align-self-center justify-content-between">
+                        <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="editAlumni(alumni)"><i class="material-icons">edit</i></button>
+                        <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="removeAlumni(alumni)"><i class="material-icons">delete</i></button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <form *ngIf="showForm">
+            <form *ngIf="showForm" [formGroup]="alumniForm" (ngSubmit)="submitForm()">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
                         Student ID
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.studentId" name="studentId">
+                            <input matInput [(ngModel)]="formAlumni.studentId" formControlName="studentId">
                         </mat-form-field>
                     </div>
-                </div><div class="row">
+                    <div *ngIf="submitted && f.studentId.errors" class="form-error">*Invalid</div>
+                </div>
+                <div class="row">
                     <div class="col-2 text-primary align-self-center">
                         Name
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.name" name="name">
+                            <input matInput [(ngModel)]="formAlumni.name" formControlName="name">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.name.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -96,9 +102,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.identificationCard" name="identificationCard">
+                            <input matInput [(ngModel)]="formAlumni.identificationCard" formControlName="identificationCard">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.identificationCard.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -106,9 +113,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.personalEmail" name="personalEmail">
+                            <input matInput [(ngModel)]="formAlumni.personalEmail" formControlName="personalEmail">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.personalEmail.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -116,9 +124,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.studentHandphone" name="studentHandphone">
+                            <input matInput [(ngModel)]="formAlumni.studentHandphone" formControlName="studentHandphone">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.studentHandphone.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -126,9 +135,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.studentTelephoneNumber" name="studentTelephoneNumber">
+                            <input matInput [(ngModel)]="formAlumni.studentTelephoneNumber" formControlName="studentTelephoneNumber">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.studentTelephoneNumber.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -136,9 +146,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.graduatingCampus" name="graduatingCampus">
+                            <input matInput [(ngModel)]="formAlumni.graduatingCampus" formControlName="graduatingCampus">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.graduatingCampus.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -146,9 +157,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.yearOfGraduation" name="yearOfGraduation">
+                            <input matInput [(ngModel)]="formAlumni.yearOfGraduation" formControlName="yearOfGraduation">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.yearOfGraduation.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -156,9 +168,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.graduatingProgramme" name="graduatingProgramme">
+                            <input matInput [(ngModel)]="formAlumni.graduatingProgramme" formControlName="graduatingProgramme">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.graduatingProgramme.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -166,9 +179,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <input matInput [(ngModel)]="formAlumni.graduatedProgrammeName" name="graduatedProgrammeName">
+                            <input matInput [(ngModel)]="formAlumni.graduatedProgrammeName" formControlName="graduatedProgrammeName">
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.graduatedProgrammeName.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -176,16 +190,17 @@
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <mat-select [(ngModel)]="formAlumni.levelOfStudy" name="status" required>
+                            <mat-select [(ngModel)]="formAlumni.levelOfStudy" formControlName="levelOfStudy">
                                 <mat-option value="diploma">Diploma</mat-option>
                                 <mat-option value="degree">Degree</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.levelOfStudy.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-lg-2 col-sm-5">
-                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                        <button type="submit" class="btn btn-danger btn-lg w-100">Submit</button>
                     </div>
                     <div class="col-lg-1 col-sm-2"></div>
                     <div class="col-lg-2 col-sm-5">

@@ -1,0 +1,6 @@
+div.spinner{
+    display: none;
+}
+router-outlet + div.spinner{
+    display: flex;
+}

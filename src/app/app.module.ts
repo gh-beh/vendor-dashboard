@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 
@@ -24,6 +24,7 @@ import {
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import {EventsService} from './services/events.service';
+import {JwtInterceptor} from './helpers/jwt.interceptor';
 
 @NgModule({
   imports: [
@@ -31,7 +32,6 @@ import {EventsService} from './services/events.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ComponentsModule,
     RouterModule,
     AppRoutingModule,
     /*AgmCoreModule.forRoot({
@@ -40,9 +40,11 @@ import {EventsService} from './services/events.service';
   ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
+    LoginComponent,
   ],
-  providers: [EventsService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

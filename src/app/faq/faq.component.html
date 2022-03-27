@@ -10,8 +10,11 @@
             </div>
             <form *ngIf="showTable" class="float-right">
                 <div class="input-group no-border">
-                    <input type="text" value="" class="form-control align-self-center" placeholder="Search...">
-                    <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+                    <input type="text" [(ngModel)]="searchText" value="" (ngModelChange)="onClearSearch()" class="form-control align-self-center text-white" placeholder="Search...">
+                    <button *ngIf="searchText !== ''" type="button" class="btn btn-outline border-0 shadow-none btn-just-icon text-white" (click)="resetSearch()">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <button mat-raised-button type="button" class="btn btn-white btn-round btn-just-icon" (click)="setDisplay()">
                         <i class="material-icons">search</i>
                     </button>
                 </div>
@@ -24,19 +27,19 @@
                     <th class="col-1">
                         No.
                     </th>
-                    <th class="col-3">
+                    <th class="col-2">
                         Question
                     </th>
-                    <th class="col-3">
+                    <th class="col-4">
                         Answer
                     </th>
-                    <th class="col-3">
+                    <th class="col-2">
                         Category
                     </th>
                     <th class="col-1">
                         Record Status
                     </th>
-                    <th class="col-1"><!--Empty header for edit button--></th>
+                    <th class="col-2"><!--Empty header for edit button--></th>
                 </tr>
                 </thead>
                 <tbody *ngFor="let faq of displayFaqs, let i = index">
@@ -44,34 +47,36 @@
                     <td class="col-1 align-self-center">
                         {{i+1}}
                     </td>
-                    <td class="col-3 align-self-center">
+                    <td class="col-2 align-self-center">
                         {{faq.question}}
                     </td>
-                    <td class="col-3 align-self-center">
+                    <td class="col-4 align-self-center">
                         {{faq.answer}}
                     </td>
-                    <td class="col-3 align-self-center">
-                        {{faqCats[faq.faqCatId - 1].name}}
+                    <td class="col-2 align-self-center">
+                        {{faqCatNameMapping[faq.faqCatId]}}
                     </td>
                     <td class="col-1 align-self-center">
                         {{faq.recordStatus ? 'Shown' : 'Hidden'}}
                     </td>
-                    <td class="col-1 text-center align-self-center">
-                        <button class="btn btn-info btn-sm" (click)="editFaq(faq);">Edit</button>
+                    <td class="col-2 text-center align-self-center justify-content-between">
+                        <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="editFaq(faq);"><i class="material-icons">edit</i></button>
+                        <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="removeFaq(faq.faqId)"><i class="material-icons">delete</i></button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <form *ngIf="showForm">
+            <form *ngIf="showForm" [formGroup]="faqForm" (ngSubmit)="submitForm()">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
                         Question
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="formFaq.question" name="question" matInput required>
+                            <input [(ngModel)]="formFaq.question" formControlName="question" matInput required>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.question.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -79,9 +84,10 @@
                     </div>
                     <div class="col-8">
                         <mat-form-field class="example-full-width">
-                            <textarea [(ngModel)]="formFaq.answer" name="answer" matInput></textarea>
+                            <textarea [(ngModel)]="formFaq.answer" formControlName="answer" matInput></textarea>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.answer.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -89,11 +95,12 @@
                     </div>
                     <div class="col-4">
                         <mat-form-field class="example-full-width">
-                            <mat-select *ngFor="let faqCat of faqCats" [(ngModel)]="formFaq.faqCatId" name="faqCatId" required>
-                                <mat-option value="{{faqCat.faqCatId}}">{{faqCat.name}}</mat-option>
+                            <mat-select [(ngModel)]="formFaq.faqCatId" formControlName="faqCatId" required>
+                                <mat-option *ngFor="let faqCat of faqCats" value="{{faqCat.faqCatId}}">{{faqCat.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.faqCatId.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -101,16 +108,17 @@
                     </div>
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
-                            <mat-select [(ngModel)]="formFaq.recordStatus" name="recordStatus" required>
+                            <mat-select [(ngModel)]="formFaq.recordStatus" formControlName="recordStatus" required>
                                 <mat-option value="true">Shown</mat-option>
                                 <mat-option value="false">Hidden</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
+                    <div *ngIf="submitted && f.recordStatus.errors" class="form-error">*Invalid</div>
                 </div>
                 <div class="row">
                     <div class="col-lg-2 col-sm-5">
-                        <button type="button" class="btn btn-danger btn-lg w-100" (click)="submitForm()">Submit</button>
+                        <button type="submit" class="btn btn-danger btn-lg w-100">Submit</button>
                     </div>
                     <div class="col-lg-1 col-sm-2"></div>
                     <div class="col-lg-2 col-sm-5">

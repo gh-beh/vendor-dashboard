@@ -25,7 +25,12 @@ export class EventsComponent implements OnInit, OnDestroy {
   imageSrc = '';
   imgurUpload = true;
   submitted = false;
-  searchText = ''
+  searchText = '';
+  statusMapping = {
+    '0': 'Ongoing',
+    '1': 'Processing',
+    '2': 'Closed',
+  };
 
   private ngUnsub: Subject<any> = new Subject();
 

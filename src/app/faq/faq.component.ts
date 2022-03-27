@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Faq, FaqCat, MOCK_FAQ_CATS, MOCK_FAQS, NULL_FAQ} from './faq';
+import {Faq, FaqCat, MOCK_FAQ_CATS, MOCK_FAQS, NULL_FAQ} from '../models/faq';
 import {FaqService} from '../services/faq.service';
 import {FaqCatService} from '../services/faq-cat.service';
 import {takeUntil} from 'rxjs/operators';

@@ -3,26 +3,29 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-// import { AlertService, AuthenticationService } from '@/_services';
+import { AuthenticationService } from '../services/authentication.service';
 
-@Component({ templateUrl: 'login.component.html' })
+@Component({
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']})
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
+  failed = false;
   returnUrl: string;
 
   constructor(
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      // private authenticationService: AuthenticationService,
+      private authenticationService: AuthenticationService,
       // private alertService: AlertService
   ) {
     // redirect to home if already logged in
-    // if (this.authenticationService.currentUserValue) {
-    //   this.router.navigate(['/']);
-    // }
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnInit() {
@@ -40,6 +43,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.failed = false;
 
     // reset alerts on submit
     // this.alertService.clear();
@@ -50,15 +54,22 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    // this.authenticationService.login(this.f.username.value, this.f.password.value)
-    //     .pipe(first())
-    //     .subscribe(
-    //         data => {
-              this.router.navigate(['admin/dashboard'], {relativeTo: this.route.root});
-            // },
-            // error => {
-            //   this.alertService.error(error);
-            //   this.loading = false;
-            // });
+    this.authenticationService.login(this.f.username.value, this.f.password.value)
+        .pipe(first())
+        .subscribe(
+            data => {
+              if (!data.token) {
+                this.authenticationService.logout();
+                this.failed = true;
+                this.loading = false;
+              } else {
+                this.router.navigate(['admin/dashboard'], {relativeTo: this.route.root});
+              }
+            },
+            error => {
+              // this.alertService.error(error);
+              this.failed = true;
+              this.loading = false;
+            });
   }
 }

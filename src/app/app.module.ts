@@ -18,10 +18,6 @@ import { LoginComponent } from './login/login.component';
 import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 
-import {
-  AgmCoreModule
-} from '@agm/core';
-
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import {EventsService} from './services/events.service';
 import {JwtInterceptor} from './helpers/jwt.interceptor';
@@ -34,9 +30,6 @@ import {JwtInterceptor} from './helpers/jwt.interceptor';
     HttpClientModule,
     RouterModule,
     AppRoutingModule,
-    /*AgmCoreModule.forRoot({
-      apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
-    })*/
   ],
   declarations: [
     AppComponent,

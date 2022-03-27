@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {FaqCat, NULL_FAQ_CAT} from '../faq/faq';
+import {FaqCat, NULL_FAQ_CAT} from '../models/faq';
 import {catchError} from 'rxjs/operators';
 
 @Injectable({

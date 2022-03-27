@@ -2,19 +2,25 @@
     <div class="card login-card flex-row-reverse w-75" style="background-image: url('assets/img/intilogo.jpg'); background-repeat: no-repeat; background-size: auto 100%;">
         <div class="loginCard">
             <div class="loginTitle">Welcome back to INTI Alumni!</div>
-            <div class="loginBanner">
+            <div [ngClass]="{'text-danger': failed}" class="loginBanner" >
                 LOGIN
             </div>
-            <div class="loginPrompt">
+            <div class="loginError" *ngIf="failed">
+                Login attempt failed! Please try again...
+            </div>
+            <div class="loginPrompt" *ngIf="!failed">
                 Please login to continue
             </div>
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm">
                 <input class="textInput" type="text" formControlName="username" value="Username">
                 <input class="textInput" type="password" formControlName="password" value="Password">
                 <div class="resetPasswordLink">
-                    <a class="linkText" href="javascript:;"><i>Forgot Password?</i></a>
+                    <a class="linkText passwordReset" href="javascript:;"><i>Forgot Password?</i></a>
                 </div>
-                <button class="loginButton" type="submit">LOGIN</button>
+                <button [disabled]="loading" class="loginButton" type="submit">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    LOGIN
+                </button>
             </form>
         </div>
     </div>

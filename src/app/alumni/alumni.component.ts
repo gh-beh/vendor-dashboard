@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Alumni, MOCK_MEMBERS, NULL_MEMBER} from './alumni';
+import {Alumni, MOCK_MEMBERS, NULL_MEMBER} from '../models/alumni';
 import {AlumniService} from '../services/alumni.service';
 import {Subject} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';

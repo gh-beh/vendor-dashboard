@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError} from 'rxjs/operators';
-import {IntiEvent, NULL_EVENT} from '../events/event';
+import {IntiEvent, NULL_EVENT} from '../models/event';
 
 @Injectable({
   providedIn: 'root'

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IntiEvent, MOCK_EVENTS, NULL_EVENT} from './event';
+import {IntiEvent, MOCK_EVENTS, NULL_EVENT} from '../models/event';
 import {EventsService} from '../services/events.service';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';

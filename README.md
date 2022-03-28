@@ -18,6 +18,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `ng build pages` to build for Github Pages. The artifacts will be stored in the `docs/` directory.
 
-## Build
+## Building
 
 Run `ng build dist` to build the project. The build artifacts will be stored in the `dist/` directory.

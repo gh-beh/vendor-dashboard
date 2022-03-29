@@ -145,9 +145,7 @@
                     <div class="col-6">
                         <mat-form-field class="example-full-width">
                             <mat-select [(ngModel)]="formEvent.status" formControlName="status" required>
-                                <mat-option value="ongoing">Ongoing</mat-option>
-                                <mat-option value="processing">Processing</mat-option>
-                                <mat-option value="closed">Closed</mat-option>
+                                <mat-option *ngFor="let label of statusMapping; let i = index" value="{{i}}">{{label}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>

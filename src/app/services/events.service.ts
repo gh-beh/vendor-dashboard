@@ -37,16 +37,16 @@ export class EventsService {
   }
 
   addEvent(event: IntiEvent): Observable<any> {
-    const {eventId, ...body} = event;
-    return this.httpClient.post<any>(this.api + '/add', body)
+    const {eventId, status, ...body} = event;
+    return this.httpClient.post<any>(this.api + '/add', {...body, status: parseInt(status, 10)})
         .pipe(
             catchError(this.handleError<any>('addEvent with event ' + event.toString(), {}))
         );
   }
 
   updateEvent(event: IntiEvent): Observable<any> {
-    const {eventId, ...body} = event;
-    return this.httpClient.put<any>(this.api + '/update/' + eventId.toString(), body)
+    const {eventId, status, ...body} = event;
+    return this.httpClient.put<any>(this.api + '/update/' + eventId.toString(), {...body, status: parseInt(status, 10)})
         .pipe(
             catchError(this.handleError<any>('updateEvent with id ' + event.eventId.toString(), {}))
         );

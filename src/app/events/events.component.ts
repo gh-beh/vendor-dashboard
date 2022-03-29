@@ -26,11 +26,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   imgurUpload = true;
   submitted = false;
   searchText = '';
-  statusMapping = {
-    '0': 'Ongoing',
-    '1': 'Processing',
-    '2': 'Closed',
-  };
+  statusMapping = ['Ongoing', 'Processing', 'Closed'];
 
   private ngUnsub: Subject<any> = new Subject();
 
@@ -67,7 +63,10 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.eventService.getEvents().pipe(takeUntil(this.ngUnsub))
         .subscribe(
             res => {
-              this.events = (res.length === 0 ? MOCK_EVENTS : res);
+              this.events = (res.length === 0 ? MOCK_EVENTS : res.map(event => ({
+                ...event,
+                status: event.status.toString(),
+              })));
               this.setDisplay();
             });
   }
@@ -89,8 +88,9 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.imageSrc = this.formEvent.image;
     this.showTable = false;
     this.showForm = true;
-    this.f.startDate.setValue(this.parseFromDBDate(event.startDate).toISOString());
-    this.f.endDate.setValue(this.parseFromDBDate(event.endDate).toISOString());
+    this.f.startDate.setValue(this.parseFromDBDate(event.startDate));
+    this.f.endDate.setValue(this.parseFromDBDate(event.endDate));
+    console.log(this.f.status.value);
   }
 
   hideForm() {
@@ -104,7 +104,6 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   submitForm() {
     this.submitted = true;
-    console.log(this.eventForm);
     if (this.eventForm.invalid) { return; }
     // Create JSON body and parse dates
     const submitEvent = {...this.formEvent};
@@ -148,7 +147,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   parseFromDBDate(dateStr: string): Date {
     const [date, time] = dateStr.split(' ');
     const [year, month, day] = date.split('-').map(str => parseInt(str, 10));
-    const [hour, min, sec] = date.split(':').map(str => parseInt(str, 10));
+    const [hour, min, sec] = time.split(':').map(str => parseInt(str, 10));
     return new Date(year, month - 1, day, hour, min, sec);
   }
 
@@ -162,7 +161,6 @@ export class EventsComponent implements OnInit, OnDestroy {
   readURL(event: Event): void {
     if ('files' in event.target && event.target['files'][0]) {
       const file = event.target['files'][0];
-      console.log(file);
 
       const reader = new FileReader();
       reader.onload = e => this.imageSrc = reader.result as string;
@@ -180,7 +178,7 @@ export class EventsComponent implements OnInit, OnDestroy {
         s => s.name.toLowerCase().includes(this.searchText.toLowerCase())
             || s.description.toLowerCase().includes(this.searchText.toLowerCase())
             || s.registerLink.toLowerCase().includes(this.searchText.toLowerCase())
-            || s.status === this.searchText,
+            || this.statusMapping[s.status] === this.searchText,
     );
   }
 

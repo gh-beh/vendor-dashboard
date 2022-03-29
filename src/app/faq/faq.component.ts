@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Faq, FaqCat, MOCK_FAQ_CATS, MOCK_FAQS, NULL_FAQ} from '../models/faq';
+import {Faq, FAQ_STATUS_MAPPING, FaqCat, MOCK_FAQ_CATS, MOCK_FAQS, NULL_FAQ} from '../models/faq';
 import {FaqService} from '../services/faq.service';
 import {FaqCatService} from '../services/faq-cat.service';
 import {takeUntil} from 'rxjs/operators';
@@ -25,6 +25,7 @@ export class FaqComponent implements OnInit, OnDestroy {
   createFaq: boolean;
   submitted: boolean;
   searchText = '';
+  faqRecordStatusLabels = FAQ_STATUS_MAPPING;
 
   private ngUnsub: Subject<any> = new Subject();
 
@@ -104,8 +105,7 @@ export class FaqComponent implements OnInit, OnDestroy {
 
   submitForm() {
     this.submitted = true;
-    console.log(this.f);
-    if (this.faqForm.invalid) {return;}
+    if (this.faqForm.invalid) { return; }
     // POST here
     const submitFaq = {...this.formFaq};
     const response = this.createFaq

@@ -57,7 +57,7 @@
                         {{faqCatNameMapping[faq.faqCatId]}}
                     </td>
                     <td class="col-1 align-self-center">
-                        {{faq.recordStatus ? 'Shown' : 'Hidden'}}
+                        {{faqRecordStatusLabels[faq.recordStatus]}}
                     </td>
                     <td class="col-2 text-center align-self-center justify-content-between">
                         <button class="btn btn-white btn-just-icon shadow-none text-danger" (click)="editFaq(faq);"><i class="material-icons">edit</i></button>

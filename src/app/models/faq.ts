@@ -26,6 +26,11 @@ export const NULL_FAQ_CAT: FaqCat = {
     recordStatus: '',
 };
 
+export const FAQ_STATUS_MAPPING: any = {
+    true: 'Shown',
+    false: 'Hidden',
+};
+
 export const MOCK_FAQ_CATS: FaqCat[] = [
     {
         faqCatId: 1,

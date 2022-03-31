@@ -66,7 +66,7 @@ export class FaqComponent implements OnInit, OnDestroy {
   getFaqs() {
     this.faqService.getFaqs().pipe(takeUntil(this.ngUnsub))
         .subscribe(res => {
-            this.faqs = (res.length === 0 ? MOCK_FAQS : res);
+            this.faqs = res;
             this.setDisplay();
         });
   }
@@ -93,8 +93,6 @@ export class FaqComponent implements OnInit, OnDestroy {
   displayForm(faq: Faq) {
     this.formFaq = {...faq};
     this.f.faqCatId.setValue(faq.faqCatId.toString());
-    console.log(typeof faq.faqCatId.toString());
-    console.log(typeof this.f.faqCatId.value);
     this.showTable = false;
     this.submitted = false;
     this.showForm = true;

@@ -33,11 +33,6 @@ export class EventsComponent implements OnInit, OnDestroy {
   constructor(private eventService: EventsService, private imgur: ImgurService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    /* MOCKING
-    this.mockEvents = MOCK_EVENTS;
-    this.mockEvents.sort((a, b) => a.status ? b.status ? 0 : -1 : b.status ? 1 : 0);
-    this.displayEvents = this.mockEvents;
-    */
     this.getEvents();
     this.showTable = true;
     this.showForm = false;
@@ -63,7 +58,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.eventService.getEvents().pipe(takeUntil(this.ngUnsub))
         .subscribe(
             res => {
-              this.events = (res.length === 0 ? MOCK_EVENTS : res.map(event => ({
+              this.events = (res.map(event => ({
                 ...event,
                 status: event.status.toString(),
               })));
@@ -88,8 +83,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.imageSrc = this.formEvent.image;
     this.showTable = false;
     this.showForm = true;
-    this.f.startDate.setValue(new Date());
-    this.f.endDate.setValue(new Date());
+    this.f.startDate.setValue(this.parseFromDBDate(event.startDate));
+    this.f.endDate.setValue(this.parseFromDBDate(event.endDate));
   }
 
   hideForm() {
@@ -115,7 +110,6 @@ export class EventsComponent implements OnInit, OnDestroy {
       imgurLink.pipe(takeUntil(this.ngUnsub)).subscribe(res => {
         submitEvent.image = res['data']['link'];
           this.imgurUpload = submitEvent.image !== '';
-          console.log(this.imgurUpload);
           if (this.imgurUpload) {
             const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
             response.pipe(takeUntil(this.ngUnsub)).subscribe(() => {
@@ -151,10 +145,10 @@ export class EventsComponent implements OnInit, OnDestroy {
     return new Date(year, month - 1, day, hour, min, sec);
   }
 
-  parseToDBDate(isoStr: string): string {
+  parseToDBDate(date: Date): string {
     // parse from ISO value into yyyy-mm-dd hh:mm:ss
-    const [yyyymmdd, hhmmss] = new Date(isoStr).toISOString().split(/[T.Z]/);
-    return `${yyyymmdd} ${hhmmss}`;
+    const [dd, mm, yyyy, , hhmmss] = date.toLocaleString().split(/[/, ]/);
+    return `${yyyy}-${mm}-${dd} ${hhmmss}`;
   }
 
   readURL(event: Event): void {

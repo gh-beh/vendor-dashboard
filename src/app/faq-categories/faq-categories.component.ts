@@ -44,7 +44,7 @@ export class FaqCategoryComponent implements OnInit, OnDestroy {
   getFaqCats() {
     this.faqCatService.getFaqCats().pipe(takeUntil(this.ngUnsub))
         .subscribe(res => {
-            this.faqCats = (res.length === 0 ? MOCK_FAQ_CATS : res);
+            this.faqCats = res;
             this.setDisplay();
         });
   }

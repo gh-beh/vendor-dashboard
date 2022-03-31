@@ -59,8 +59,7 @@ export class AlumniComponent implements OnInit, OnDestroy {
     this.memberService.getMembers().pipe(takeUntil(this.ngUnsub))
       .subscribe(
         res => {
-          this.failToLoad = res.length === 0;
-          this.alumnis = (res.length === 0 ? MOCK_MEMBERS : res);
+          this.alumnis = res;
           this.setDisplay();
         });
   }
@@ -87,7 +86,6 @@ export class AlumniComponent implements OnInit, OnDestroy {
   }
 
   hideForm() {
-    console.log(this.f);
     this.showTable = true;
     this.showForm = false;
     this.formAlumni = {...this.emptyAlumni};

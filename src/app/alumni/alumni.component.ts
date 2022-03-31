@@ -29,11 +29,6 @@ export class AlumniComponent implements OnInit, OnDestroy {
   constructor(private memberService: AlumniService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    /*
-    this.mockMembers = MOCK_MEMBERS;
-    this.mockMembers.sort((a, b) => a.gradYear < b.gradYear ? -1 : a.gradYear === b.gradYear ? 0 : 1);
-    this.displayMembers = this.mockMembers;
-    */
     this.getAlumnis();
     this.showTable = true;
     this.showForm = false;
@@ -45,8 +40,8 @@ export class AlumniComponent implements OnInit, OnDestroy {
           identificationCard: ['', Validators.required],
           studentId: ['', Validators.required],
           personalEmail: ['', [Validators.required, Validators.email]],
-          studentHandphone: ['', Validators.required],
-          studentTelephoneNumber: ['', Validators.required],
+          studentHandphone: ['', [Validators.required, Validators.pattern(/^[0-9-+)(]+$/)]],
+          studentTelephoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9-+)(]+$/)]],
           graduatingCampus: ['', Validators.required],
           yearOfGraduation: ['', Validators.required, Validators.min(0)],
           graduatingProgramme: ['', Validators.required],
@@ -92,6 +87,7 @@ export class AlumniComponent implements OnInit, OnDestroy {
   }
 
   hideForm() {
+    console.log(this.f);
     this.showTable = true;
     this.showForm = false;
     this.formAlumni = {...this.emptyAlumni};

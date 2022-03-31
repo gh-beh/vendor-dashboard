@@ -14,10 +14,10 @@ import {FormBuilder, Validators, FormGroup, AbstractControl} from '@angular/form
 export class FaqComponent implements OnInit, OnDestroy {
   mockFaqs: Faq[];
   faqForm: FormGroup;
-  displayFaqs: Faq[];
+  displayFaqs: Faq[] = [];
   faqs: Faq[];
-  faqCats: FaqCat[];
-  faqCatNameMapping: {};
+  faqCats: FaqCat[] = [];
+  faqCatNameMapping = {};
   showTable: boolean;
   showForm: boolean;
   formFaq: Faq;
@@ -45,7 +45,7 @@ export class FaqComponent implements OnInit, OnDestroy {
           this.faqCatNameMapping = {};
           this.faqCats = (res.length === 0 ? MOCK_FAQ_CATS : res);
           this.faqCats.forEach(faqCat => {
-            this.faqCatNameMapping[faqCat.faqCatId] = faqCat.name;
+            this.faqCatNameMapping[faqCat.faqCatId.toString()] = faqCat.name;
           });
         });
     this.getFaqs();
@@ -57,7 +57,7 @@ export class FaqComponent implements OnInit, OnDestroy {
       {
         question: ['', Validators.required],
         answer: ['', Validators.required],
-        faqCatId: ['', [Validators.required, Validators.min(1)]],
+        faqCatId: ['', Validators.required],
         recordStatus: ['', Validators.required],
       },
     )
@@ -92,6 +92,9 @@ export class FaqComponent implements OnInit, OnDestroy {
 
   displayForm(faq: Faq) {
     this.formFaq = {...faq};
+    this.f.faqCatId.setValue(faq.faqCatId.toString());
+    console.log(typeof faq.faqCatId.toString());
+    console.log(typeof this.f.faqCatId.value);
     this.showTable = false;
     this.submitted = false;
     this.showForm = true;
@@ -107,7 +110,7 @@ export class FaqComponent implements OnInit, OnDestroy {
     this.submitted = true;
     if (this.faqForm.invalid) { return; }
     // POST here
-    const submitFaq = {...this.formFaq};
+    const submitFaq = {...this.formFaq, faqCatId: parseInt(this.f.faqCatId.value, 10)};
     const response = this.createFaq
         ? this.faqService.addFaq(submitFaq)
         : this.faqService.updateFaq(submitFaq);

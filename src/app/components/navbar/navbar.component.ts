@@ -4,6 +4,7 @@ import {FAQ_ITEMS, ROUTES} from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,6 +22,7 @@ export class NavbarComponent implements OnInit {
                 private element: ElementRef,
                 private router: Router,
                 private httpClient: HttpClient,
+                private authenticationService: AuthenticationService,
                 private route: ActivatedRoute) {
       this.location = location;
           this.sidebarVisible = false;
@@ -131,6 +133,7 @@ export class NavbarComponent implements OnInit {
     }
 
     logout() {
+        this.authenticationService.logout();
         this.router.navigate(['login'], {relativeTo: this.route.root});
     }
 }

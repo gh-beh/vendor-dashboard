@@ -21,7 +21,7 @@
             </form>
         </div>
         <div class="card-body">
-            <table *ngIf="showTable" class="table">
+            <table *ngIf="showTable && faqCats.length > 0" class="table">
                 <thead class=" text-primary">
                 <tr class="d-flex">
                     <th class="col-2">
@@ -54,6 +54,7 @@
                 </tr>
                 </tbody>
             </table>
+            <div *ngIf="displayFaqCats.length === 0" class="h1 text-center">No FAQ Categories found!</div>
             <form *ngIf="showForm" [formGroup]="faqCatForm" (ngSubmit)="submitForm()">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">

@@ -26,7 +26,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   imgurUpload = true;
   submitted = false;
   searchText = '';
-  statusMapping = ['Ongoing', 'Processing', 'Closed'];
+  statusMapping = ['Hidden', 'Visible'];
 
   private ngUnsub: Subject<any> = new Subject();
 
@@ -88,9 +88,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.imageSrc = this.formEvent.image;
     this.showTable = false;
     this.showForm = true;
-    this.f.startDate.setValue(this.parseFromDBDate(event.startDate));
-    this.f.endDate.setValue(this.parseFromDBDate(event.endDate));
-    console.log(this.f.status.value);
+    this.f.startDate.setValue(new Date());
+    this.f.endDate.setValue(new Date());
   }
 
   hideForm() {
@@ -116,6 +115,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       imgurLink.pipe(takeUntil(this.ngUnsub)).subscribe(res => {
         submitEvent.image = res['data']['link'];
           this.imgurUpload = submitEvent.image !== '';
+          console.log(this.imgurUpload);
           if (this.imgurUpload) {
             const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
             response.pipe(takeUntil(this.ngUnsub)).subscribe(() => {
@@ -154,7 +154,6 @@ export class EventsComponent implements OnInit, OnDestroy {
   parseToDBDate(isoStr: string): string {
     // parse from ISO value into yyyy-mm-dd hh:mm:ss
     const [yyyymmdd, hhmmss] = new Date(isoStr).toISOString().split(/[T.Z]/);
-    console.log(yyyymmdd, hhmmss);
     return `${yyyymmdd} ${hhmmss}`;
   }
 

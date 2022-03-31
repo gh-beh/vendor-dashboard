@@ -11,14 +11,15 @@ export class JwtInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
-
-    const currentUser = this.authenticationService.currentUserValue;
-    if (currentUser && currentUser.token) {
-    request = request.clone({
-            setHeaders: {
-                'user-token': currentUser.token,
-            }
-        });
+    if(!request.url.includes('api.imgur.com')) {
+        const currentUser = this.authenticationService.currentUserValue;
+        if (currentUser && currentUser.token) {
+            request = request.clone({
+                setHeaders: {
+                    'user-token': currentUser.token,
+                }
+            });
+        }
     }
 
     return next.handle(request);

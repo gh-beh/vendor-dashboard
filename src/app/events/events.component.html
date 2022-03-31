@@ -21,7 +21,7 @@
             </form>
         </div>
         <div class="card-body">
-            <table *ngIf="showTable" class="table">
+            <table *ngIf="showTable && displayEvents.length > 0" class="table">
                 <thead class=" text-primary">
                     <tr class="d-flex">
                         <th class="col-1">
@@ -78,6 +78,7 @@
                     </tr>
                 </tbody>
             </table>
+            <div *ngIf="displayEvents.length === 0" class="h1 text-center">No events found!</div>
             <form *ngIf="showForm" [formGroup]="eventForm" (ngSubmit)="submitForm()">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">

@@ -60,10 +60,10 @@
                             {{event.name}}
                         </td>
                         <td class="col-1 align-self-center">
-                            {{event.startDate}}
+                            {{event.startDate.split(' ')[0]}}
                         </td>
                         <td class="col-1 align-self-center">
-                            {{event.endDate}}
+                            {{event.endDate.split(' ')[0]}}
                         </td>
                         <td class="col-4 col-md-2 col-lg-2 align-self-center text-center">
                             <a href="{{event.registerLink}}">{{event.registerLink}}</a>

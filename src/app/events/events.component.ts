@@ -48,6 +48,7 @@ export class EventsComponent implements OnInit, OnDestroy {
           status: ['', Validators.required],
         }
     );
+    this.f.startDate.valueChanges.pipe(takeUntil(this.ngUnsub)).subscribe(res => console.log(res.toLocaleString()));
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -147,7 +148,8 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   parseToDBDate(date: Date): string {
     // parse from ISO value into yyyy-mm-dd hh:mm:ss
-    const [dd, mm, yyyy, , hhmmss] = date.toLocaleString().split(/[/, ]/);
+    const [dd, mm, yyyy] = date.toLocaleString().split(/[/, ]/);
+    const [, , , , hhmmss] = date.toString().split(' ');
     return `${yyyy}-${mm}-${dd} ${hhmmss}`;
   }
 

@@ -22,6 +22,7 @@ import {FaqComponent} from '../../faq/faq.component';
 import {FaqCategoryComponent} from '../../faq-categories/faq-categories.component';
 import {AdminLayoutComponent} from './admin-layout.component';
 import {ComponentsModule} from '../../components/components.module';
+import {NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {EventsService} from '../../services/events.service';
 import {AlumniService} from '../../services/alumni.service';
 import {FaqService} from '../../services/faq.service';
@@ -44,7 +45,8 @@ import {ImgurService} from '../../services/imgur.service';
         MatTooltipModule,
         MatDatepickerModule,
         MatIconModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        NgbTimepickerModule,
     ],
     declarations: [
         AdminLayoutComponent,

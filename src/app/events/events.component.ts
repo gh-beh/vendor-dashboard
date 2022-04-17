@@ -5,6 +5,7 @@ import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormControl, AbstractControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {ImgurService} from '../services/imgur.service';
+import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-table-list',
@@ -14,19 +15,21 @@ import {ImgurService} from '../services/imgur.service';
 export class EventsComponent implements OnInit, OnDestroy {
   eventForm: FormGroup;
   defaultImage = 'assets/img/img-default.png';
-  displayEvents: IntiEvent[];
-  events: IntiEvent[];
+  displayEvents: IntiEvent[] = [];
+  events: IntiEvent[] = [];
   mockEvents: IntiEvent[];
-  showTable: boolean;
-  showForm: boolean;
+  showTable = true;
+  showForm = false;
   formEvent: IntiEvent;
   emptyEvent: IntiEvent;
-  createEvent: boolean;
+  createEvent = false;
   imageSrc = '';
   imgurUpload = true;
   submitted = false;
   searchText = '';
   statusMapping = ['Hidden', 'Visible'];
+  startTime = {hour: 12, minute: 0};
+  endTime = {hour: 12, minute: 0};
 
   private ngUnsub: Subject<any> = new Subject();
 
@@ -46,9 +49,15 @@ export class EventsComponent implements OnInit, OnDestroy {
           startDate: ['', Validators.required],
           endDate: ['', Validators.required],
           status: ['', Validators.required],
+          startTime: ['', Validators.required],
+          endTime: ['', Validators.required],
         }
     );
-    this.f.startDate.valueChanges.pipe(takeUntil(this.ngUnsub)).subscribe(res => console.log(res.toLocaleString()));
+    this.f.startTime.valueChanges.pipe(takeUntil(this.ngUnsub))
+        .subscribe(
+            res => {
+              console.log(res);
+            });
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -84,8 +93,12 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.imageSrc = this.formEvent.image;
     this.showTable = false;
     this.showForm = true;
-    this.f.startDate.setValue(this.parseFromDBDate(event.startDate));
+    const startDateTime = this.parseFromDBDate(event.startDate);
+    const endDateTime = this.parseFromDBDate(event.endDate);
+    this.f.startDate.setValue(startDateTime);
     this.f.endDate.setValue(this.parseFromDBDate(event.endDate));
+    this.startTime = {hour: startDateTime.getHours(), minute: startDateTime.getMinutes()};
+    this.endTime = {hour: endDateTime.getHours(), minute: endDateTime.getMinutes()};
   }
 
   hideForm() {
@@ -99,13 +112,14 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   submitForm() {
     this.submitted = true;
+    console.log(this.startTime);
     if (this.eventForm.invalid) { return; }
     // Create JSON body and parse dates
     const submitEvent = {...this.formEvent};
-    submitEvent.startDate = this.parseToDBDate(this.f.startDate.value);
-    submitEvent.endDate = this.parseToDBDate(this.f.endDate.value);
+    submitEvent.startDate = this.parseToDBDate(this.f.startDate.value, this.f.startTime.value);
+    submitEvent.endDate = this.parseToDBDate(this.f.endDate.value,  this.f.endTime.value);
 
-    if (this.imageSrc !== '') {
+    if (this.imageSrc !== submitEvent.image) {
       // POST to imgur and retrieve link
       const imgurLink = this.imgur.uploadImg(this.extractData(this.imageSrc));
       imgurLink.pipe(takeUntil(this.ngUnsub)).subscribe(res => {
@@ -120,7 +134,7 @@ export class EventsComponent implements OnInit, OnDestroy {
           }
       });
     } else {
-      submitEvent.image = '';
+      submitEvent.image = submitEvent.image || '';
       const response = this.createEvent ? this.eventService.addEvent(submitEvent) : this.eventService.updateEvent(submitEvent);
       response.pipe(takeUntil(this.ngUnsub)).subscribe(() => {
         this.getEvents();
@@ -140,14 +154,18 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   parseFromDBDate(dateStr: string): Date {
+    // from yyyy-mm-dd hh:mm:ss to date
     const [date, time] = dateStr.split(' ');
     const [year, month, day] = date.split('-').map(str => parseInt(str, 10));
     const [hour, min, sec] = time.split(':').map(str => parseInt(str, 10));
     return new Date(year, month - 1, day, hour, min, sec);
   }
 
-  parseToDBDate(date: Date): string {
+  parseToDBDate(date: Date, time: NgbTimeStruct): string {
     // parse from ISO value into yyyy-mm-dd hh:mm:ss
+    const {hour, minute} = time;
+    date.setHours(hour);
+    date.setMinutes(minute);
     const [dd, mm, yyyy] = date.toLocaleString().split(/[/, ]/);
     const [, , , , hhmmss] = date.toString().split(' ');
     return `${yyyy}-${mm}-${dd} ${hhmmss}`;

@@ -60,10 +60,10 @@
                             {{event.name}}
                         </td>
                         <td class="col-1 align-self-center">
-                            {{event.startDate.split(' ')[0]}}
+                            {{event.startDate}}
                         </td>
                         <td class="col-1 align-self-center">
-                            {{event.endDate.split(' ')[0]}}
+                            {{event.endDate}}
                         </td>
                         <td class="col-4 col-md-2 col-lg-2 align-self-center text-center">
                             <a href="{{event.registerLink}}">{{event.registerLink}}</a>
@@ -102,7 +102,7 @@
                     </div>
                     <div *ngIf="submitted && f.description.errors" class="form-error">*Invalid</div>
                 </div>
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col-2 text-primary align-self-center">
                         Start Date
                     </div>
@@ -113,9 +113,12 @@
                             <mat-datepicker #startDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
+                    <div class="col-4">
+                        <ngb-timepicker [(ngModel)]="startTime" formControlName="startTime"></ngb-timepicker>
+                    </div>
                     <div *ngIf="submitted && f.startDate.errors" class="form-error">*Invalid</div>
                 </div>
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col-2 text-primary align-self-center">
                         End Date
                     </div>
@@ -125,6 +128,9 @@
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #endDatePicker></mat-datepicker>
                         </mat-form-field>
+                    </div>
+                    <div class="col-4">
+                        <ngb-timepicker [(ngModel)]="endTime" formControlName="endTime"></ngb-timepicker>
                     </div>
                     <div *ngIf="submitted && f.endDate.errors" class="form-error">*Invalid</div>
                 </div>

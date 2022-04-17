@@ -14,10 +14,10 @@ npm install
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Pages
-
-Run `ng build pages` to build for Github Pages. The artifacts will be stored in the `docs/` directory.
-
 ## Building
 
-Run `ng build dist` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build-dist` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+### Pages
+
+Run `npm run build-pages` to build for Github Pages. The artifacts will be stored in the `docs/` directory.

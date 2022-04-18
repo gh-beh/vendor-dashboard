@@ -1,5 +1,5 @@
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { AlumniComponent } from '../../alumni/alumni.component';
@@ -11,11 +11,13 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import {FaqComponent} from '../../faq/faq.component';
 import {FaqCategoryComponent} from '../../faq-categories/faq-categories.component';
 import {AdminLayoutComponent} from './admin-layout.component';
+import {AuthGuard} from '../../helpers/auth.guard';
 
 const AdminLayoutRoutes: Routes = [
     {
         path: '',
         component: AdminLayoutComponent,
+        canActivateChild: [AuthGuard],
         children: [
             { path: 'dashboard',      component: DashboardComponent },
             { path: 'member-listing',   component: AlumniComponent },
@@ -34,4 +36,4 @@ const AdminLayoutRoutes: Routes = [
     imports: [RouterModule.forChild(AdminLayoutRoutes)],
     exports: [RouterModule]
 })
-export class AdminLayoutRoutingModule { }
+export class AdminLayoutRouter { }

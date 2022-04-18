@@ -78,7 +78,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div *ngIf="displayEvents.length === 0" class="h1 text-center">No events found!</div>
+            <div *ngIf="showTable && displayEvents.length === 0" class="h1 text-center">No events found!</div>
             <form *ngIf="showForm" [formGroup]="eventForm" (ngSubmit)="submitForm()">
                 <div class="row">
                     <div class="col-2 text-primary align-self-center">
@@ -108,7 +108,7 @@
                     </div>
                     <div class="col-4">
                         <mat-form-field appearance="fill">
-                            <input matInput [matDatepicker]="startDatePicker" formControlName="startDate">
+                            <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" [max]="f.endDate">
                             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #startDatePicker></mat-datepicker>
                         </mat-form-field>
@@ -124,7 +124,7 @@
                     </div>
                     <div class="col-4">
                         <mat-form-field appearance="fill">
-                            <input matInput [matDatepicker]="endDatePicker" formControlName="endDate">
+                            <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" [min]="f.startDate">
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #endDatePicker></mat-datepicker>
                         </mat-form-field>

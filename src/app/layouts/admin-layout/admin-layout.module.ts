@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminLayoutRoutingModule} from './admin-layout.routing';
+import { AdminLayoutRouter} from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { AlumniComponent } from '../../alumni/alumni.component';
 import { EventsComponent } from '../../events/events.component';
@@ -33,7 +33,7 @@ import {ImgurService} from '../../services/imgur.service';
     imports: [
         CommonModule,
         ComponentsModule,
-        AdminLayoutRoutingModule,
+        AdminLayoutRouter,
         RouterModule,
         FormsModule,
         ReactiveFormsModule,

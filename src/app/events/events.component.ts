@@ -79,11 +79,22 @@ export class EventsComponent implements OnInit, OnDestroy {
   addEvent() {
     this.createEvent = true;
     this.displayForm(this.emptyEvent);
+    const now = new Date();
+    this.f.startDate.setValue(now);
+    this.f.endDate.setValue(now);
+    this.startTime = {hour: now.getHours(), minute: now.getMinutes()};
+    this.endTime = {hour: now.getHours() + 1, minute: now.getMinutes()};
   }
 
   editEvent(event: IntiEvent) {
     this.createEvent = false;
     this.displayForm(event);
+    const startDateTime = this.parseFromDBDate(event.startDate);
+    const endDateTime = this.parseFromDBDate(event.endDate);
+    this.f.startDate.setValue(startDateTime);
+    this.f.endDate.setValue(endDateTime);
+    this.startTime = {hour: startDateTime.getHours(), minute: startDateTime.getMinutes()};
+    this.endTime = {hour: endDateTime.getHours(), minute: endDateTime.getMinutes()};
   }
 
   displayForm(event: IntiEvent) {
@@ -93,12 +104,6 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.imageSrc = this.formEvent.image;
     this.showTable = false;
     this.showForm = true;
-    const startDateTime = this.parseFromDBDate(event.startDate);
-    const endDateTime = this.parseFromDBDate(event.endDate);
-    this.f.startDate.setValue(startDateTime);
-    this.f.endDate.setValue(this.parseFromDBDate(event.endDate));
-    this.startTime = {hour: startDateTime.getHours(), minute: startDateTime.getMinutes()};
-    this.endTime = {hour: endDateTime.getHours(), minute: endDateTime.getMinutes()};
   }
 
   hideForm() {
@@ -166,8 +171,12 @@ export class EventsComponent implements OnInit, OnDestroy {
     const {hour, minute} = time;
     date.setHours(hour);
     date.setMinutes(minute);
-    const [dd, mm, yyyy] = date.toLocaleString().split(/[/, ]/);
+    // Fix timezone to GMT +8, en-GB locale format "dd/mm/yyyy, hh:mm:ss"
+    const [dd, mm] = date.toLocaleString('en-GB', {timeZone: 'Singapore'}).split(/[/, ]/);
+    let [, , yyyy] = date.toLocaleString('en-GB', {timeZone: 'Singapore'}).split(/[/, ]/);
     const [, , , , hhmmss] = date.toString().split(' ');
+    // Manual error catching to prevent bad data passed into db crashing api server
+    if (parseInt(yyyy, 10) < 1970) { yyyy = '1970' }
     return `${yyyy}-${mm}-${dd} ${hhmmss}`;
   }
 

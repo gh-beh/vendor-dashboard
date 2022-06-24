@@ -3,17 +3,15 @@ import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
-import {AuthGuard} from './helpers/auth.guard';
 import {LoginComponent} from './login/login.component';
 
-const routes: Routes =[
+const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
   }, {
-    path: 'admin',
+    path: 'vendor',
     loadChildren: () => import('./layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule),
-    canActivate: [AuthGuard],
   }, {
     path: '**',
     redirectTo: 'login',

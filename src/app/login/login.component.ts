@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   templateUrl: './login.component.html',
@@ -19,13 +18,8 @@ export class LoginComponent implements OnInit {
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      private authenticationService: AuthenticationService,
       // private alertService: AlertService
   ) {
-    // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
   }
 
   ngOnInit() {
@@ -54,22 +48,11 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
-        .pipe(first())
-        .subscribe(
-            data => {
-              if (!data.token) {
-                this.authenticationService.logout();
-                this.failed = true;
-                this.loading = false;
-              } else {
-                this.router.navigate(['admin/dashboard'], {relativeTo: this.route.root});
-              }
-            },
-            error => {
-              // this.alertService.error(error);
-              this.failed = true;
-              this.loading = false;
-            });
+    if (this.f.username.value !== 'vendor' || this.f.password.value !== 'vendor') {
+      this.failed = true;
+      this.loading = false;
+    } else {
+      this.router.navigate(['vendor/open'], {relativeTo: this.route.root});
+    }
   }
 }

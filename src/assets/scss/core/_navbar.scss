@@ -62,6 +62,7 @@
 
         .dropdown-menu-right{
             transform-origin: 100% 0;
+            right: 0;
         }
 
         .nav-item.active .nav-link{
@@ -161,11 +162,11 @@
 
   .notification{
     position: absolute;
-    top: 5px;
+    top: 2px;
     border: 1px solid #FFF;
-    right: 10px;
+    right: 2px;
     font-size: 9px;
-    background: #f44336;
+    background: #0077ff;
     color: #FFFFFF;
     min-width: 20px;
     padding: 0px 5px;

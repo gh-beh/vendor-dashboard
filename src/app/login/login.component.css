@@ -1,3 +1,6 @@
+div {
+    padding-bottom: 16px;
+}
 
 .login-card {
     height: 80vh;
@@ -65,7 +68,7 @@
     align-self: center;
     height: 64px;
     width: 50%;
-    background-color: red;
+    background-color: #00ddff;
     border-radius: 8px;
     border: 8px red;
 }

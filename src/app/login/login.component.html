@@ -1,7 +1,7 @@
-<div class="d-flex align-items-center justify-content-center vh-100 vw-100" style="background-image: url('assets/img/background.jpg'); background-repeat: no-repeat; background-size: 100% 100%;">
-    <div class="card login-card flex-row-reverse w-75" style="background-image: url('assets/img/intilogo.jpg'); background-repeat: no-repeat; background-size: auto 100%;">
+<div class="d-flex align-items-center justify-content-center vh-100 vw-100" style="background-color: #00ddff;">
+<!--    <div class="card login-card flex-row-reverse w-75">-->
         <div class="loginCard">
-            <div class="loginTitle">Welcome back to INTI Alumni!</div>
+            <div class="loginTitle">SBC External Bus Management Portal</div>
             <div [ngClass]="{'text-danger': failed}" class="loginBanner" >
                 LOGIN
             </div>
@@ -12,8 +12,12 @@
                 Please login to continue
             </div>
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm">
-                <input class="textInput" type="text" formControlName="username" value="Username">
-                <input class="textInput" type="password" formControlName="password" value="Password">
+                <div>
+                    <input class="textInput" type="text" formControlName="username" value="Username">
+                </div>
+                <div>
+                    <input class="textInput" type="password" formControlName="password" value="Password">
+                </div>
 <!--                <div class="resetPasswordLink">-->
 <!--                    <a class="linkText passwordReset" href="javascript:;"><i>Forgot Password?</i></a>-->
 <!--                </div>-->
@@ -23,5 +27,5 @@
                 </button>
             </form>
         </div>
-    </div>
+<!--    </div>-->
 </div>

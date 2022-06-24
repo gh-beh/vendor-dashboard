@@ -8,18 +8,10 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/admin/dashboard', title: 'Dashboard',  icon: 'computer', class: '' },
-    { path: '/admin/member-listing', title: 'Alumni Listing',  icon: 'person', class: '' },
-    { path: '/admin/event-activities', title: 'Event & Activities',  icon: 'account_balance', class: '' },
-    // { path: '/loyalty-rewards', title: 'Loyalty & Rewards',  icon: 'redeem', class: '' },
-    // { path: '/login', title: 'Icons',  icon:'bubble_chart', class: '' },
-    // { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
-    // { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
-];
-
-export const FAQ_ITEMS: RouteInfo[] = [
-    { path: '/admin/faq', title: 'Questions',  icon: 'question_answer', class: '' },
-    { path: '/admin/faq-categories', title: 'Categories',  icon: 'format_list_bulleted', class: '' },
+    { path: '/vendor/open', title: 'Open Listings',  icon: 'computer', class: '' },
+    { path: '/vendor/accepted', title: 'Accepted Listings',  icon: 'person', class: '' },
+    { path: '/vendor/cancelled', title: 'Cancelled Listings',  icon: 'person', class: '' },
+    { path: '/vendor/information', title: 'Vendor Information',  icon: 'person', class: '' },
 ];
 
 @Component({
@@ -29,12 +21,10 @@ export const FAQ_ITEMS: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[];
-  faqItems: RouteInfo[];
   constructor() { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
-    this.faqItems = FAQ_ITEMS.filter(item => item);
   }
   isMobileMenu() {
       return $(window).width() <= 991;

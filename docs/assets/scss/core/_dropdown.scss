@@ -122,6 +122,10 @@
   }
 }
 
+.dropdown-menu-right{
+  right: 0 !important;
+}
+
 // this could be in a .btn-group or .dropdown
 .dropdown-toggle {
   &.bmd-btn-icon,

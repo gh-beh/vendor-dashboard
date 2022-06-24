@@ -114,7 +114,7 @@ namespace Chartist {
      * Use this function to register event handlers. The handler callbacks are synchronous and will run in the main thread rather than the event loop.
      *
      * @method on
-     * @param event {string} Name of the event. Check the examples for supported events.
+     * @param event {string} Name of the event. Check the examples for supported bookings.
      * @param handler {Function} The handler function that will be called when an event with the given name was emitted. This function will receive a data argument which contains event data. See the example for more details.
      */
     on(event: string, handler: Function): IChartistBase<T>;

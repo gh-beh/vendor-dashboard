@@ -6,7 +6,7 @@
     "preinstall": "npx npm-force-resolutions",
     "ng": "ng",
     "start": "ng serve",
-    "build-pages": "ng build --output-path docs --base-href /alumni-dashboard/",
+    "build-pages": "ng build --output-path docs --base-href /vendor-dashboard/",
     "build-dist": "ng build",
     "build-all": "npm run build-pages && npm run build-dist",
     "test": "ng test",
